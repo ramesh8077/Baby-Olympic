@@ -1870,8 +1870,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             <div class="ft-h">Contact</div>
             <div class="ft-links">
               <a class="ft-link" href="https://wa.me/919911892043">WhatsApp: 9911892043</a
-              ><a class="ft-link" href="mailto:hello@babyolympicgames.in"
-                >hello@babyolympicgames.in</a
+              ><a class="ft-link" href="mailto:babyolympicgames@gmail.com"
+                >babyolympicgames@gmail.com</a
               ><span class="ft-link">Kanpur · 8–11 Sept 2026</span>
             </div>
           </div>
@@ -1886,7 +1886,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     /></svg></a
                 ><a
                   class="ft-social-link"
-                  href="https://www.facebook.com/kanpurolympici/"
+                  href="https://www.facebook.com/people/Kanpur-Olympic-Association/61591818121258/"
                   aria-label="Facebook"
                   ><svg viewBox="0 0 24 24" fill="currentColor">
                     <path
@@ -2016,6 +2016,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             submit: () => {
               if (!this.validate(4)) return;
               const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
+              const subject = 'Baby Olympic Games Registration Enquiry - ' + id;
+              const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
+              window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
               const colors = ['#FF3FA4', '#FFD400', '#4CD3C2', '#8B3FE8', '#3B1264'];
               const confetti = Array.from({ length: 46 }, (_, i) => ({
                 left: (Math.random() * 100).toFixed(1) + '%', background: colors[i % colors.length],
