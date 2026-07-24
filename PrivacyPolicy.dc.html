@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy - Baby Olympic Games 2026</title>
+  <link rel="icon" type="image/png" href="assets/images/logo.png?v=2026_final">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { margin: 0; background: #fff; color: #2E1B47; font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #B026D6; text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: #3B1264; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 32px); box-sizing: border-box; }
+    .sec { padding: clamp(40px, 5vw, 64px) 0; }
+    .paper { background: #F7F1FD; }
+    .light { background: #fff; }
+
+    /* Header Bar */
+    .hd-bar { position: -webkit-sticky; position: sticky; top: 0; z-index: 60; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(107, 33, 201, 0.14); }
+    .hd-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 32px); height: 118px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-sizing: border-box; }
+    .hd-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+    .hd-links { display: flex; align-items: center; gap: clamp(16px, 3vw, 30px); }
+    .hd-link { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14.5px; color: #3B1264; text-decoration: none; position: relative; padding-bottom: 6px; white-space: nowrap; }
+    .hd-link:hover { color: #B026D6; }
+    .hd-link.on { color: #B026D6; }
+    .hd-link.on::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: #FFD400; border-radius: 2px; }
+    .hd-cta { display: inline-flex; align-items: center; justify-content: center; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px; padding: 12px 24px; background: linear-gradient(180deg, #8B3FE8, #6B21C9); color: #fff; border-radius: 999px; text-decoration: none; border: 2px solid #fff; box-shadow: 0 4px 0 #4A1780; transition: transform 0.2s ease; white-space: nowrap; }
+    .hd-cta:hover { transform: translateY(-2px); }
+    .hd-burger { display: none; width: 44px; height: 44px; border-radius: 12px; border: 2px solid #3B1264; background: #fff; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; padding: 0; }
+    .hd-mmenu { display: none; flex-direction: column; gap: 2px; padding: 10px 20px 20px; border-top: 1px solid rgba(107, 33, 201, 0.14); background: #fff; }
+    .hd-mmenu.open { display: flex; }
+    .hd-mlink { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15.5px; color: #3B1264; text-decoration: none; padding: 13px 2px; border-bottom: 1px solid rgba(107, 33, 201, 0.1); }
+    .hd-mlink.on { color: #B026D6; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #7B2FF7, #C13FD6); position: relative; overflow: hidden; color: #fff; padding: clamp(48px, 6vw, 72px) 0; }
+    .starDeco { position: absolute; color: #FFD400; font-size: 22px; animation: tw 3s ease-in-out infinite; }
+    @keyframes tw { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+    .kicker { display: flex; align-items: center; gap: 8px; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px; color: #FFD400; text-transform: uppercase; letter-spacing: 0.5px; }
+    .star { color: #FFD400; font-size: 14px; display: inline-block; animation: tw 2.2s ease-in-out infinite; }
+    .h1 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(32px, 4.8vw, 48px); color: #fff; margin: 12px 0 16px; line-height: 1.1; }
+    .sub { font-size: 16.5px; line-height: 1.6; color: #F0E0FA; max-width: 760px; }
+    .effectiveBadge { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 6px 16px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); font-size: 13px; font-weight: 500; color: #FFD400; }
+
+    /* Policy Grid & Cards */
+    .policyLayout { display: grid; grid-template-columns: 280px 1fr; gap: 36px; align-items: start; margin-top: 10px; }
+    .policyNav { position: sticky; top: 140px; background: #fff; border-radius: 20px; border: 3px solid #F0E4FA; padding: 20px; box-shadow: 0 10px 30px rgba(59, 18, 100, 0.05); }
+    .policyNavH { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 15px; color: #3B1264; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .policyNavList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+    .policyNavList a { display: block; font-size: 13.5px; font-weight: 500; color: #5A4670; padding: 8px 12px; border-radius: 10px; text-decoration: none; transition: all 0.2s ease; }
+    .policyNavList a:hover { background: #F7F1FD; color: #B026D6; padding-left: 16px; }
+
+    .policyContainer { display: flex; flex-direction: column; gap: 24px; }
+    .policyCard { background: #fff; border-radius: 20px; border: 3px solid #F0E4FA; padding: clamp(24px, 4vw, 36px); transition: border-color 0.2s ease; box-shadow: 0 6px 20px rgba(59, 18, 100, 0.03); }
+    .policyCard:hover { border-color: #D6C3F5; }
+    .cardNum { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #F7F1FD; color: #B026D6; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px; margin-bottom: 12px; }
+    .cardH2 { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: clamp(20px, 2.5vw, 24px); color: #3B1264; margin: 0 0 14px; line-height: 1.25; }
+    .cardText { font-size: 15px; line-height: 1.7; color: #5A4670; margin-bottom: 14px; }
+    .cardText:last-child { margin-bottom: 0; }
+    .bulletList { margin: 10px 0 16px 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .bulletItem { display: flex; align-items: flex-start; gap: 12px; font-size: 14.5px; color: #3B1264; font-weight: 500; }
+    .bulletDot { width: 8px; height: 8px; border-radius: 50%; background: #B026D6; margin-top: 8px; flex-shrink: 0; }
+
+    .subSection { background: #F7F1FD; border-radius: 14px; padding: 18px 22px; margin-top: 14px; border-left: 4px solid #8B3FE8; }
+    .subH3 { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 16px; color: #3B1264; margin: 0 0 8px; }
+
+    .contactBox { background: linear-gradient(135deg, #7B2FF7, #C13FD6); border-radius: 20px; padding: 32px; color: #fff; margin-top: 10px; }
+    .contactBoxH2 { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 26px; color: #fff; margin-0 0 10px; }
+    .contactBoxTxt { font-size: 15px; color: #F0E0FA; margin-bottom: 20px; }
+    .contactRow { display: flex; flex-wrap: wrap; gap: 16px; }
+    .cItem { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 12px 20px; border-radius: 999px; color: #fff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.3); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .cItem:hover { background: #FFD400; color: #3B1264; border-color: #FFD400; }
+
+    /* Footer */
+    .ft-foot { background: #3B1264; color: #fff; position: relative; overflow: hidden; }
+    .ft-star { position: absolute; color: #FFD400; font-size: 16px; animation: ftTwinkle 2.6s ease-in-out infinite; pointer-events: none; }
+    @keyframes ftTwinkle { 0%, 100% { opacity: 0.4; transform: scale(0.85) rotate(0deg); } 50% { opacity: 1; transform: scale(1.2) rotate(15deg); } }
+    .ft-wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 32px); box-sizing: border-box; }
+    .ft-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.1fr; gap: 32px; padding: 60px 0 36px; }
+    .ft-logo { display: inline-block; text-decoration: none; }
+    .ft-logoCard { background: #ffffff; padding: 10px 18px; border-radius: 18px; display: inline-flex; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); }
+    .ft-tag { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: #FFD400; margin: 16px 0 8px; }
+    .ft-txt { font-family: 'Poppins', sans-serif; font-weight: 400; font-size: 13.5px; color: #D7C3F0; line-height: 1.6; margin: 0; max-width: 280px; }
+    .ft-h { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 12.5px; letter-spacing: 0.6px; text-transform: uppercase; color: #FF7FC4; margin: 0 0 16px; }
+    .ft-links { display: flex; flex-direction: column; gap: 12px; }
+    .ft-socials { display: flex; gap: 16px; align-items: center; margin-bottom: 8px; }
+    .ft-social-link { color: #E4D6F7; transition: color 0.2s; }
+    .ft-social-link:hover { color: #FFD400; }
+    .ft-social-link svg { display: block; width: 20px; height: 20px; fill: currentColor; }
+    .ft-link { color: #E4D6F7; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; text-decoration: none; }
+    .ft-link:hover { color: #FFD400; }
+    .ft-cta { display: inline-flex; align-items: center; justify-content: center; width: fit-content; font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 13px; padding: 10px 20px; background: #FF3FA4; color: #fff; border-radius: 999px; text-decoration: none; margin-top: 4px; border: 2px solid #fff; box-shadow: 0 3px 0 #C41C77; transition: transform 0.2s ease; }
+    .ft-cta:hover { transform: translateY(-2px); }
+    .ft-bot { border-top: 1px solid rgba(255, 255, 255, 0.15); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 18px 0; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 12.5px; color: #B79BDA; }
+    .ft-pol { display: flex; gap: 18px; }
+    .ft-pol a { color: #B79BDA; text-decoration: none; }
+    .ft-pol a:hover { color: #FFD400; }
+
+    @media (max-width: 900px) {
+      .policyLayout { grid-template-columns: 1fr; }
+      .policyNav { display: none; }
+      .hd-links { display: none; }
+      .hd-burger { display: flex; }
+      .ft-grid { grid-template-columns: 1fr 1fr; gap: 30px; padding: 50px 0 32px; }
+    }
+    @media (max-width: 560px) {
+      .ft-grid { grid-template-columns: 1fr; padding: 42px 0 28px; gap: 32px; }
+      .ft-bot { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <div class="hd-bar">
+    <div class="hd-wrap">
+      <a class="hd-logo" href="Home.dc.html">
+        <img src="assets/images/logo.png?v=2026_final" alt="Baby Olympic Games 2026" style="height: 100px; width: auto; display: block;">
+      </a>
+      <nav class="hd-links">
+        <a class="hd-link" href="Home.dc.html">Home</a>
+        <a class="hd-link" href="About.dc.html">About Event</a>
+        <a class="hd-link" href="Sponsor.dc.html">Sponsor</a>
+        <a class="hd-link" href="Register.dc.html">Register</a>
+        <a class="hd-link" href="Contact.dc.html">Contact</a>
+        <a class="hd-link on" href="PrivacyPolicy.dc.html">Privacy Policy</a>
+        <a class="hd-cta" href="Register.dc.html">Register Now</a>
+      </nav>
+      <button class="hd-burger" id="menuToggleBtn" aria-label="Toggle menu">
+        <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
+          <path d="M1,2 h18 M1,8 h18 M1,14 h18" stroke="#3B1264" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="hd-mmenu" id="mobileMenu">
+      <a class="hd-mlink" href="Home.dc.html">Home</a>
+      <a class="hd-mlink" href="About.dc.html">About Event</a>
+      <a class="hd-mlink" href="Sponsor.dc.html">Sponsor</a>
+      <a class="hd-mlink" href="Register.dc.html">Register</a>
+      <a class="hd-mlink" href="Contact.dc.html">Contact</a>
+      <a class="hd-mlink on" href="PrivacyPolicy.dc.html">Privacy Policy</a>
+      <a class="hd-cta" href="Register.dc.html" style="margin-top: 10px;">Register Now</a>
+    </div>
+  </div>
+
+  <!-- Hero Banner -->
+  <header class="hero">
+    <span class="starDeco" style="left: 6%; top: 18%;">★</span>
+    <span class="starDeco" style="right: 8%; top: 24%; animation-delay: 1s; font-size: 16px;">★</span>
+    <div class="wrap">
+      <div class="kicker"><span class="star">★</span>Legal &amp; Transparency</div>
+      <h1 class="h1">Privacy Policy</h1>
+      <p class="sub">Welcome to Baby Olympic. We are committed to protecting your privacy and ensuring that your personal information is handled responsibly. This Privacy Policy explains how we collect, use, store, and safeguard the information you provide when you use our website, register for events, or interact with our services.</p>
+      <div class="effectiveBadge">
+        <span>🔒 Official Policy</span> • <span>Kanpur Olympic Association</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Policy Content Section -->
+  <main class="sec paper">
+    <div class="wrap policyLayout">
+      
+      <!-- Side Sticky Navigation -->
+      <aside class="policyNav">
+        <div class="policyNavH">Quick Navigation</div>
+        <ul class="policyNavList">
+          <li><a href="#sec1">1. Information We Collect</a></li>
+          <li><a href="#sec2">2. How We Use Information</a></li>
+          <li><a href="#sec3">3. Children's Privacy</a></li>
+          <li><a href="#sec4">4. Payment Information</a></li>
+          <li><a href="#sec5">5. Sharing of Information</a></li>
+          <li><a href="#sec6">6. Media &amp; Photographs</a></li>
+          <li><a href="#sec7">7. Cookies</a></li>
+          <li><a href="#sec8">8. Data Security</a></li>
+          <li><a href="#sec9">9. Data Retention</a></li>
+          <li><a href="#sec10">10. Your Rights</a></li>
+          <li><a href="#sec11">11. Third-Party Links</a></li>
+          <li><a href="#sec12">12. Policy Changes</a></li>
+          <li><a href="#sec13">13. Contact Us</a></li>
+        </ul>
+      </aside>
+
+      <!-- Policy Cards Container -->
+      <div class="policyContainer">
+
+        <!-- Card 1 -->
+        <article class="policyCard" id="sec1">
+          <div class="cardNum">01</div>
+          <h2 class="cardH2">1. Information We Collect</h2>
+          <p class="cardText">We may collect the following information when you register or interact with our platform:</p>
+
+          <div class="subSection">
+            <h3 class="subH3">Personal Information</h3>
+            <ul class="bulletList">
+              <li class="bulletItem"><span class="bulletDot"></span><span>Parent or guardian's name</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Child's name</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Child's age or date of birth</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Email address &amp; Mobile number</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Residential address, City, and State</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Emergency contact details</span></li>
+            </ul>
+          </div>
+
+          <div class="subSection">
+            <h3 class="subH3">Registration Information</h3>
+            <ul class="bulletList">
+              <li class="bulletItem"><span class="bulletDot"></span><span>Event selected &amp; Participation category</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Payment details (processed securely through third-party payment gateways)</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Registration history</span></li>
+            </ul>
+          </div>
+
+          <div class="subSection">
+            <h3 class="subH3">Technical Information</h3>
+            <ul class="bulletList">
+              <li class="bulletItem"><span class="bulletDot"></span><span>IP address, Browser type, &amp; Device information</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Cookies and similar technologies</span></li>
+              <li class="bulletItem"><span class="bulletDot"></span><span>Website usage statistics</span></li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="policyCard" id="sec2">
+          <div class="cardNum">02</div>
+          <h2 class="cardH2">2. How We Use Your Information</h2>
+          <p class="cardText">We use your information to facilitate smooth event participation and service quality:</p>
+          <ul class="bulletList">
+            <li class="bulletItem"><span class="bulletDot"></span><span>Process event registrations &amp; verify participant eligibility.</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Communicate event schedules, updates, confirmations, reminders, and certificates.</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Improve our services, maintain participant records, and respond to queries.</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Comply with applicable legal obligations.</span></li>
+          </ul>
+          <p class="cardText" style="margin-top: 12px;">We may also use your contact information to inform you about future events, promotions, and announcements. You may opt out of promotional communications at any point of time.</p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="policyCard" id="sec3">
+          <div class="cardNum">03</div>
+          <h2 class="cardH2">3. Children's Privacy</h2>
+          <p class="cardText">Our services are intended for parents or legal guardians registering children for participation. We collect children's information only as necessary to facilitate event registration and participation. Parents or legal guardians are responsible for providing accurate information and consent for such collection.</p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="policyCard" id="sec4">
+          <div class="cardNum">04</div>
+          <h2 class="cardH2">4. Payment Information</h2>
+          <p class="cardText">All payments are processed through trusted third-party payment service providers. We do not store your debit card, credit card, UPI PIN, banking credentials, or other sensitive payment information on our servers.</p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="policyCard" id="sec5">
+          <div class="cardNum">05</div>
+          <h2 class="cardH2">5. Sharing of Information</h2>
+          <p class="cardText">We do not sell or rent your personal information.</p>
+          <p class="cardText">We may share information only with:</p>
+          <ul class="bulletList">
+            <li class="bulletItem"><span class="bulletDot"></span><span>Event management partners</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Payment service providers</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Technology and hosting partners</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Government authorities when required by law</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Service providers assisting in event execution</span></li>
+          </ul>
+          <p class="cardText" style="margin-top: 10px;">All such parties are required to maintain appropriate confidentiality and security standards.</p>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="policyCard" id="sec6">
+          <div class="cardNum">06</div>
+          <h2 class="cardH2">6. Photographs, Videos and Media</h2>
+          <p class="cardText">During events, photographs and videos may be captured for documentation and promotional purposes.</p>
+          <p class="cardText">By registering for an event, parents or legal guardians consent to the use of photographs, videos, and recordings of participants for promotional materials, social media, website content, advertisements, event reports, and other marketing communications, without additional compensation.</p>
+        </article>
+
+        <!-- Card 7 -->
+        <article class="policyCard" id="sec7">
+          <div class="cardNum">07</div>
+          <h2 class="cardH2">7. Cookies</h2>
+          <p class="cardText">Our website may use cookies and similar technologies to improve website functionality, remember user preferences, analyse website traffic, and enhance user experience.</p>
+          <p class="cardText">You may disable cookies through your browser settings, although some website features may not function properly.</p>
+        </article>
+
+        <!-- Card 8 -->
+        <article class="policyCard" id="sec8">
+          <div class="cardNum">08</div>
+          <h2 class="cardH2">8. Data Security</h2>
+          <p class="cardText">We implement reasonable technical and organisational security measures to protect your information against unauthorised access, misuse, alteration, or disclosure.</p>
+          <p class="cardText">While we strive to maintain strong security standards, no online platform can guarantee complete security.</p>
+        </article>
+
+        <!-- Card 9 -->
+        <article class="policyCard" id="sec9">
+          <div class="cardNum">09</div>
+          <h2 class="cardH2">9. Data Retention</h2>
+          <p class="cardText">We retain your information only for as long as necessary to manage registrations, maintain event records, comply with legal requirements, resolve disputes, and improve future events.</p>
+        </article>
+
+        <!-- Card 10 -->
+        <article class="policyCard" id="sec10">
+          <div class="cardNum">10</div>
+          <h2 class="cardH2">10. Your Rights</h2>
+          <p class="cardText">You may request to:</p>
+          <ul class="bulletList">
+            <li class="bulletItem"><span class="bulletDot"></span><span>Access your personal information.</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Correct inaccurate information &amp; update your details.</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Withdraw marketing consent.</span></li>
+            <li class="bulletItem"><span class="bulletDot"></span><span>Request deletion of information where legally permissible.</span></li>
+          </ul>
+        </article>
+
+        <!-- Card 11 -->
+        <article class="policyCard" id="sec11">
+          <div class="cardNum">11</div>
+          <h2 class="cardH2">11. Third-Party Links</h2>
+          <p class="cardText">Our website may contain links to third-party websites. We are not responsible for their privacy practices or content. Users are encouraged to review their respective privacy policies.</p>
+        </article>
+
+        <!-- Card 12 -->
+        <article class="policyCard" id="sec12">
+          <div class="cardNum">12</div>
+          <h2 class="cardH2">12. Changes to this Privacy Policy</h2>
+          <p class="cardText">We may revise this Privacy Policy from time to time. Updated versions will be published on this page with the revised effective date.</p>
+        </article>
+
+        <!-- Card 13 - Contact Box -->
+        <div class="contactBox" id="sec13">
+          <h2 class="contactBoxH2">13. Contact Us</h2>
+          <p class="contactBoxTxt">If you have any questions regarding this Privacy Policy or our data practices, please reach out to us:</p>
+          <div class="contactRow">
+            <a class="cItem" href="https://wa.me/919911892043" target="_blank">💬 WhatsApp: 9911892043</a>
+            <a class="cItem" href="mailto:babyolympicgames@gmail.com">✉️ babyolympicgames@gmail.com</a>
+            <span class="cItem">📍 Kanpur, 8–11 Sept 2026</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="ft-foot">
+    <span class="ft-star" style="left: 6%; top: 16%;">★</span>
+    <span class="ft-star" style="right: 8%; top: 24%; font-size: 12px; animation-delay: 1s;">★</span>
+    <div class="ft-wrap ft-grid">
+      <div>
+        <a class="ft-logo" href="Home.dc.html">
+          <div class="ft-logoCard">
+            <img src="assets/images/logo.png?v=2026_final" alt="Baby Olympic Games 2026" style="height: 90px; width: auto; display: block;">
+          </div>
+        </a>
+        <div class="ft-tag">हर बच्चा चैंपियन है</div>
+        <p class="ft-txt">India's youngest sporting movement — a joyful first step into sport for children aged 2–8, organised by the Kanpur Olympic Association.</p>
+      </div>
+
+      <div>
+        <div class="ft-h">Quick Links</div>
+        <div class="ft-links">
+          <a class="ft-link" href="Home.dc.html">Home</a>
+          <a class="ft-link" href="About.dc.html">About Event</a>
+          <a class="ft-link" href="Sponsor.dc.html">Sponsor</a>
+          <a class="ft-link" href="Register.dc.html">Register</a>
+          <a class="ft-link" href="Contact.dc.html">Contact</a>
+          <a class="ft-link" href="PrivacyPolicy.dc.html">Privacy Policy</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h">Contact</div>
+        <div class="ft-links">
+          <a class="ft-link" href="https://wa.me/919911892043">WhatsApp: 9911892043</a>
+          <a class="ft-link" href="mailto:babyolympicgames@gmail.com">babyolympicgames@gmail.com</a>
+          <span class="ft-link">Kanpur · 8–11 Sept 2026</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="ft-h">Follow the Fun</div>
+        <div class="ft-links">
+          <div class="ft-socials">
+            <a class="ft-social-link" href="https://x.com/kanpurolympici" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a class="ft-social-link" href="https://www.facebook.com/people/Kanpur-Olympic-Association/61591818121258/" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg></a>
+            <a class="ft-social-link" href="https://www.instagram.com/kanpurolympici/" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          </div>
+          <a class="ft-cta" href="Register.dc.html">Register Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ft-wrap ft-bot">
+      <div>© 2026 Baby Olympic Games · Organised by Kanpur Olympic Association</div>
+      <div class="ft-pol">
+        <a href="PrivacyPolicy.dc.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menuToggleBtn').addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
