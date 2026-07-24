@@ -1439,13 +1439,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               alt="Baby Olympic Games 2026"
               style="height: 100px; width: auto; display: block"
           /></a>
-          <nav class="hd-links">
-            <a class="hd-link" href="Home.dc.html">Home</a
-            ><a class="hd-link" href="About.dc.html">About Event</a
-            ><a class="hd-link on" href="Register.dc.html">Register</a
-            ><a class="hd-link" href="Contact.dc.html">Contact</a
-            ><a class="hd-cta" href="Register.dc.html">Register Now</a>
-          </nav>
+          <nav class="hd-links"><a class="hd-link" href="Home.dc.html">Home</a><a class="hd-link" href="About.dc.html">About Event</a><a class="hd-link on" href="Register.dc.html">Register</a><a class="hd-link" href="Contact.dc.html">Contact</a><a class="hd-cta" href="Register.dc.html">Register Now</a></nav>
           <button class="hd-burger" sc-camel-on-click="{{toggleMenu}}" aria-label="Toggle menu">
             <svg width="20" height="16" sc-camel-view-box="0 0 20 16" fill="none">
               <path
@@ -1458,16 +1452,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           </button>
         </div>
         <sc-if value="{{menuOpen}}"
-          ><div class="hd-mmenu">
-            <a class="hd-mlink" href="Home.dc.html" sc-camel-on-click="{{toggleMenu}}">Home</a
-            ><a class="hd-mlink" href="About.dc.html" sc-camel-on-click="{{toggleMenu}}"
-              >About Event</a
-            ><a class="hd-mlink on" href="Register.dc.html" sc-camel-on-click="{{toggleMenu}}"
-              >Register</a
-            ><a class="hd-mlink" href="Contact.dc.html" sc-camel-on-click="{{toggleMenu}}"
-              >Contact</a
-            ><a class="hd-cta hd-mcta" href="Register.dc.html">Register Now</a>
-          </div></sc-if
+          ><div class="hd-mmenu" id="mobileMenu"><a class="hd-mlink" href="Home.dc.html">Home</a><a class="hd-mlink" href="About.dc.html">About Event</a><a class="hd-mlink on" href="Register.dc.html">Register</a><a class="hd-mlink" href="Contact.dc.html">Contact</a><a class="hd-cta hd-mcta" href="Register.dc.html">Register Now</a></div></sc-if
         >
       </div>
       <header class="hero">
