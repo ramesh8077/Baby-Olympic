@@ -487,13 +487,13 @@ a{color:#B026D6;text-decoration:none}a:hover{color:#3B1264}
 <div class="heroSlider">
   <div class="heroSlides" sc-camel-style="transform:{{slideTransform}}">
     <div class="heroSlide">
-      <img src="assets/photos/3_banner.png" alt="Baby Olympic Games Kanpur 2026 — नन्हें कदम, ओलंपिक की ओर">
+      <img src="assets/photos/3_banner.png?v=2026_new_photos" alt="Baby Olympic Games Kanpur 2026 — नन्हें कदम, ओलंपिक की ओर">
     </div>
     <div class="heroSlide">
-      <img src="assets/photos/1.png" alt="Mark Your Calendar — The Sportz Hub Kanpur 8th-11th Sept 2026">
+      <img src="assets/photos/1.png?v=2026_new_photos" alt="Mark Your Calendar — The Sportz Hub Kanpur 8th-11th Sept 2026">
     </div>
     <div class="heroSlide">
-      <img src="assets/photos/Banner-for-webstie.png" alt="We Are Looking For Partners & Sponsors — Baby Olympic Games 2026">
+      <img src="assets/photos/Banner-for-webstie.png?v=2026_new_photos" alt="We Are Looking For Partners & Sponsors — Baby Olympic Games 2026">
     </div>
   </div>
   <button class="heroNavBtn heroNavPrev" sc-camel-on-click="{{prevSlide}}" aria-label="Previous Slide">‹</button>
@@ -569,25 +569,27 @@ a{color:#B026D6;text-decoration:none}a:hover{color:#3B1264}
 <section class="sec paper" id="category-format">
 <style>
 
-.sportsSliderWrap { position:relative; max-width:1200px; margin:0 auto; padding:0 48px; }
-#category-format { background:#F7F1FD; position:relative; padding: clamp(40px, 5vw, 64px) 0; }
+.sportsSliderWrap { position:relative; max-width:100%; margin:0 auto; padding:0 28px; }
+#category-format { background: #ffffff; position:relative; padding-top: 0px; padding-bottom: 16px; }
 #category-format .shead { margin-bottom: 28px; }
 #category-format .shead h2 { color:#3B1264 !important; text-shadow:none; margin-top: 10px; }
 #category-format .kicker { background:#EEE3FB; color:#B026D6; border:1px solid #D6C3F5; margin:0 auto; width:fit-content; padding:4px 14px; border-radius:999px; }
 .sport-slider-box { overflow:hidden; width:100%; border-radius:20px; padding:8px 0; }
-.sport-slider { display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:4px 0 16px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.sport-slider { display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:4px 0 16px; -webkit-overflow-scrolling:touch; scrollbar-width:none; align-items:stretch; }
 .sport-slider::-webkit-scrollbar { display:none; }
-.sport-card { flex:0 0 calc((100% - 40px) / 3); min-width:0; scroll-snap-align:start; display:flex; flex-direction:column; background:#ffffff; border-radius:20px; border:2.5px solid #F0E4FA; overflow:hidden; transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; box-shadow:0 6px 18px rgba(59,18,100,0.06); box-sizing:border-box; }
+.sport-card { flex:0 0 calc((100% - 48px) / 3); min-width:0; scroll-snap-align:start; display:flex; flex-direction:column; background:#ffffff; border-radius:20px; border:2.5px solid #F0E4FA; overflow:hidden; transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; box-shadow:0 6px 18px rgba(59,18,100,0.06); box-sizing:border-box; height:auto; }
 .sport-card:hover { transform:translateY(-6px); box-shadow:0 12px 28px rgba(59,18,100,0.12); border-color:#D6C3F5; }
 .sportNavBtn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:44px; height:76px; border-radius:50%; background:#3B1264; color:#FFD400; border:2px solid #FFD400; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:22px; font-weight:bold; transition:all 0.2s ease; box-shadow:0 4px 14px rgba(59,18,100,0.25); }
 .sportNavBtn:hover { background:#FFD400; color:#3B1264; border-color:#3B1264; transform:translateY(-50%) scale(1.1); }
-.sportNavPrev { left:0px; }
-.sportNavNext { right:0px; }
-@media(max-width:900px){ .sportsSliderWrap { padding:0 36px; } .sport-card { flex:0 0 calc((100% - 20px) / 2); } }
-@media(max-width:600px){ .sportsSliderWrap { padding:0 28px; } .sport-card { flex:0 0 85%; } .sportNavPrev { left:-4px; } .sportNavNext { right:-4px; } } .sportNavPrev { left:2px; } .sportNavNext { right:2px; } } .sportNavPrev { left:4px; } .sportNavNext { right:4px; } }
+.sportNavPrev { left:-16px; }
+.sportNavNext { right:-16px; }
+@media(max-width:900px){ .sportsSliderWrap { padding:0 24px; } .sport-card { flex:0 0 calc((100% - 20px) / 2); } }
+@media(max-width:600px){ .sportsSliderWrap { padding:0 20px; } .sport-card { flex:0 0 85%; } .sportNavPrev { left:-8px; } .sportNavNext { right:-8px; } }
+@media(max-width:768px){ .category-format-inner { padding: 24px 16px !important; } }
 </style>
-  <div class="wrap">
-    <div class="shead ctr" data-reveal="">
+  <div class="wrap category-format-outer" style="max-width:1420px; margin:0 auto; padding:0 20px;">
+    <div class="category-format-inner" style="background:#ffffff; border-radius:32px; box-shadow:0 16px 48px rgba(59,18,100,0.06); padding:24px 32px 56px; position:relative; border:1px solid rgba(255,255,255,0.6);">
+      <div class="shead ctr" data-reveal="">
       <div class="kicker" style="margin:0 auto;width:fit-content">
         <span class="star">★</span>Category &amp; Format
       </div>
@@ -602,72 +604,80 @@ a{color:#B026D6;text-decoration:none}a:hover{color:#3B1264}
       
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Team%20Sports.png" alt="Team Sports" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Team Sports</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Football, Handball, Basketball (Team format for older age groups), Cricket, Kabaddi, Tug of War.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Individual%20Sports%20%26%20Skill%20Challenges.png" alt="Individual Sports & Skill Challenges" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Individual Sports & Skill Challenges</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;"><strong style="color:#2E1B47;font-weight:600;">Ball &amp; Skill Sports:</strong> Football, Handball, and Basketball (Individual skill-based format for younger children).</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Track%20%26%20Field.png" alt="Track & Field" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Track & Field</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Athletics, Throwing Events.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Precision%20%26%20Combat.png" alt="Precision & Combat" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Precision & Combat</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Shooting, Judo, Taekwondo, Karate, Billiards, Golf.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Physical%20Proficiency.png" alt="Physical Proficiency" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Physical Proficiency</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Gymnastics, Cycling, Skating, Swimming, Diving, Mountain Climbing.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Racket%20%26%20Court%20Sports.png" alt="Racket & Court Sports" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Racket & Court Sports</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Badminton, Table Tennis, Mini Tennis, Mini Pickleball.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Fitness%20%26%20Performance.png" alt="Fitness & Performance" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Fitness & Performance</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Yoga, Zumba Dance, Aerobic Dance, Dance Competition.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Strength%20Sports.png" alt="Strength Sports" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Strength Sports</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Weightlifting, Powerlifting.</p>
     </div>
   </div>
   <div class="sport-card" style="display:flex; flex-direction:column; background:#fff; border-radius:20px; border:3px solid #F0E4FA; overflow:hidden; transition:transform 0.25s, box-shadow 0.2s; box-shadow:0 6px 16px rgba(59,18,100,0.04);">
     <img src="assets/images/Special%20Category.png" alt="Special Category" style="width:100%; aspect-ratio:3/4; object-fit:cover; border-bottom:3px solid #F0E4FA;">
-    <div style="padding:22px 20px;">
+    <div style="padding:22px 20px; flex-grow:1; display:flex; flex-direction:column; justify-content:flex-start;">
       <h3 style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:18px; color:#3B1264; margin:0 0 8px; line-height:1.2;">Special Category</h3>
       <p style="font-size:14px; color:#5A4670; line-height:1.55; margin:0; font-weight:500;">Parent-Child Fun Games (Engaging baby games with Mom &amp; Dad).</p>
     </div>
   </div>
     </div>
+    
+    <div class="slider-dots" id="sportsSliderDots" style="display:flex; justify-content:center; gap:8px; margin-top:32px;">
+      <div class="dot active" style="width:24px; height:8px; border-radius:4px; background:#3B1264; transition:0.3s;"></div>
+      <div class="dot" style="width:8px; height:8px; border-radius:4px; background:#D6C3F5; transition:0.3s;"></div>
+      <div class="dot" style="width:8px; height:8px; border-radius:4px; background:#D6C3F5; transition:0.3s;"></div>
+    </div>
+    
+    </div>
   </div>
 </section>
 
-<section class="sec light"><div class="wrap">
+<section class="sec light" style="padding-top: 24px;"><div class="wrap">
 <div class="shead ctr" data-reveal=""><h2 class="h2">Find Your Child's Category</h2><p class="body">Age-wise categories designed for participation, fun &amp; early confidence.</p></div>
 <div class="catGrid cat4">
 <div class="catCard" data-reveal="">
@@ -1087,6 +1097,33 @@ class Component extends DCLogic {
     this._iv = setInterval(() => this.tick(), 1000);
     this._sliderIv = setInterval(() => this.nextSlide(), 6000);
     this._sportsIv = setInterval(() => this.scrollSports(1), 3500);
+    
+    // Setup sports slider dots automated scroll tracking
+    const sportsSlider = document.getElementById('sportsSlider');
+    if (sportsSlider) {
+      this._sportsScrollHandler = () => {
+        const dots = document.querySelectorAll('#sportsSliderDots .dot');
+        if (!dots.length) return;
+        const maxScroll = sportsSlider.scrollWidth - sportsSlider.clientWidth;
+        if (maxScroll <= 0) return;
+        let dotIdx = Math.round((sportsSlider.scrollLeft / maxScroll) * (dots.length - 1));
+        dots.forEach((dot, i) => {
+          if (i === dotIdx) {
+            dot.className = 'dot active';
+            dot.style.width = '24px';
+            dot.style.background = '#3B1264';
+          } else {
+            dot.className = 'dot';
+            dot.style.width = '8px';
+            dot.style.background = '#D6C3F5';
+          }
+        });
+      };
+      sportsSlider.addEventListener('scroll', this._sportsScrollHandler);
+      // Initialize dots position
+      setTimeout(() => this._sportsScrollHandler(), 100);
+    }
+    
     const el = document.getElementById('stats');
     if (el && 'IntersectionObserver' in window) {
       this._io = new IntersectionObserver((es) => {
@@ -1104,7 +1141,7 @@ class Component extends DCLogic {
       this._io2 = io2;
     } catch (e) {}
   }
-  componentWillUnmount() { clearInterval(this._iv); clearInterval(this._sliderIv); clearInterval(this._sportsIv); if (this._io) this._io.disconnect(); if (this._io2) this._io2.disconnect(); }
+  componentWillUnmount() { clearInterval(this._iv); clearInterval(this._sliderIv); clearInterval(this._sportsIv); if (this._io) this._io.disconnect(); if (this._io2) this._io2.disconnect(); if (this._sportsScrollHandler) { const sl = document.getElementById('sportsSlider'); if (sl) sl.removeEventListener('scroll', this._sportsScrollHandler); } }
   tick() {
     const target = new Date('2026-09-08T09:00:00+05:30').getTime();
     let ms = Math.max(0, target - Date.now());
