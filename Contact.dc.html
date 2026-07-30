@@ -402,7 +402,17 @@ class Component extends DCLogic {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) { e.email = 'Enter a valid email.'; ok = false; }
         if (f.msg.trim().length < 5) { e.msg = 'Please write a short message.'; ok = false; }
         this.setState({ e });
-        if (ok) { const subject = 'Baby Olympic Games Contact Enquiry'; const body = ['New contact enquiry:', 'Name: ' + f.name, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'Message: ' + f.msg].join('\n'); window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); this.setState({ sent: true }); }
+        if (ok) {
+          fetch('send-email.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ formType: 'contact', data: f })
+          }).catch(err => {
+            console.log('Email send fallback:', err);
+            const subject = 'Baby Olympic Games Contact Enquiry'; const body = ['New contact enquiry:', 'Name: ' + f.name, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'Message: ' + f.msg].join('\n'); window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+          });
+          this.setState({ sent: true });
+        }
       },
       reset: () => this.setState({ sent: false, f: { name: '', mobile: '', email: '', type: 'Registration', msg: '' }, e: { name: '', mobile: '', email: '', msg: '' } })
     };

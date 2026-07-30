@@ -1883,7 +1883,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           };
         }
         persist() {
-          const { games, consentTerms, consentPhoto, photoName, certName, ...rest } = this.state.f;
+          const { games, consentTerms, consentPhoto, photoName, certName, photo, cert, ...rest } = this.state.f;
           try { localStorage.setItem('bog-reg-draft', JSON.stringify({ ...rest, games })); } catch (err) {}
         }
         ageAtEvent() {
@@ -1947,12 +1947,40 @@ document.addEventListener('DOMContentLoaded', async function() {
             f, e: st.e,
             onField: (ev) => {
               const t = ev.target; let v = t.type === 'checkbox' ? t.checked : t.value;
-              if (t.type === 'file') v = t.files && t.files[0] ? t.files[0].name : '';
-              this.setState(s => {
-                const nf = { ...s.f, [t.name]: v };
-                if (t.name === 'dob') nf.games = [];
-                return { f: nf };
-              }, () => this.persist());
+              if (t.type === 'file') {
+                const file = t.files && t.files[0];
+                if (file) {
+                  if (file.size > 5 * 1024 * 1024) {
+                    alert('File size exceeds 5MB limit. Please select a smaller file.');
+                    t.value = '';
+                    return;
+                  }
+                  const reader = new FileReader();
+                  reader.onload = (e) => {
+                    const base64Data = e.target.result;
+                    const key = t.name === 'photoName' ? 'photo' : 'cert';
+                    this.setState(s => ({
+                      f: {
+                        ...s.f,
+                        [t.name]: file.name,
+                        [key]: { name: file.name, type: file.type || 'application/octet-stream', data: base64Data }
+                      }
+                    }), () => this.persist());
+                  };
+                  reader.readAsDataURL(file);
+                } else {
+                  const key = t.name === 'photoName' ? 'photo' : 'cert';
+                  this.setState(s => ({
+                    f: { ...s.f, [t.name]: '', [key]: null }
+                  }), () => this.persist());
+                }
+              } else {
+                this.setState(s => {
+                  const nf = { ...s.f, [t.name]: v };
+                  if (t.name === 'dob') nf.games = [];
+                  return { f: nf };
+                }, () => this.persist());
+              }
             },
             toggleGame: (ev) => {
               const g = ev.currentTarget.dataset.g;
@@ -1966,9 +1994,17 @@ document.addEventListener('DOMContentLoaded', async function() {
             submit: () => {
               if (!this.validate(4)) return;
               const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
-              const subject = 'Baby Olympic Games Registration Enquiry - ' + id;
-              const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
-              window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+              const regData = { ...f, regId: id, category: (cat ? cat.name : 'to be confirmed') };
+              fetch('send-email.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ formType: 'registration', data: regData })
+              }).catch(err => {
+                console.log('Email send fallback:', err);
+                const subject = 'Baby Olympic Games Registration Enquiry - ' + id;
+                const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
+                window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+              });
               const colors = ['#FF3FA4', '#FFD400', '#4CD3C2', '#8B3FE8', '#3B1264'];
               const confetti = Array.from({ length: 46 }, (_, i) => ({
                 left: (Math.random() * 100).toFixed(1) + '%', background: colors[i % colors.length],

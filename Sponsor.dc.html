@@ -462,9 +462,24 @@ a{color:#B026D6;text-decoration:none}a:hover{color:#3B1264}
       if(e.target && e.target.id === 'sponsorEnquiryForm') {
          e.preventDefault();
          const fields = Array.from(e.target.querySelectorAll("input, textarea"));
-         const subject = "Baby Olympic Games Sponsorship Enquiry";
-         const body = ["New sponsorship enquiry:", "Full Name: " + (fields[0] ? fields[0].value : ""), "Company Name: " + (fields[1] ? fields[1].value : ""), "Email: " + (fields[2] ? fields[2].value : ""), "Mobile: " + (fields[3] ? fields[3].value : ""), "Designation: " + (fields[4] ? fields[4].value : ""), "Message: " + (fields[5] ? fields[5].value : "")].join("\\n");
-         window.location.href = "mailto:babyolympicgames@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+         const sponsorData = {
+           fullName: fields[0] ? fields[0].value : '',
+           company: fields[1] ? fields[1].value : '',
+           email: fields[2] ? fields[2].value : '',
+           mobile: fields[3] ? fields[3].value : '',
+           designation: fields[4] ? fields[4].value : '',
+           message: fields[5] ? fields[5].value : ''
+         };
+         fetch('send-email.php', {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify({ formType: 'sponsor', data: sponsorData })
+         }).catch(err => {
+           console.log('Email send fallback:', err);
+           const subject = "Baby Olympic Games Sponsorship Enquiry";
+           const body = ["New sponsorship enquiry:", "Full Name: " + sponsorData.fullName, "Company Name: " + sponsorData.company, "Email: " + sponsorData.email, "Mobile: " + sponsorData.mobile, "Designation: " + sponsorData.designation, "Message: " + sponsorData.message].join("\n");
+           window.location.href = "mailto:babyolympicgames@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+         });
          e.target.style.display = 'none';
          document.getElementById('sponsorSuccessMsg').style.display = 'block';
          e.target.reset();
