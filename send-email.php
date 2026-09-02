@@ -32,7 +32,7 @@ $smtpPort = 465;
 $smtpUser = "babyolympicgames@gmail.com";
 $smtpPass = "cxqmazxwadaydnmy";
 
-$subject = "New Enquiry - Baby Olympic Games";
+$subject = "New Enquiry - Baby Games";
 $body = "";
 $attachments = [];
 
@@ -46,7 +46,7 @@ if ($formType === 'contact') {
     $subject = "📩 Contact Enquiry from " . $name;
     $body = "
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; background-color: #ffffff;'>
-      <h2 style='color: #3B1264; border-bottom: 2px solid #8B3FE8; padding-bottom: 10px;'>Baby Olympic Games - Contact Enquiry</h2>
+      <h2 style='color: #3B1264; border-bottom: 2px solid #8B3FE8; padding-bottom: 10px;'>Baby Games - Contact Enquiry</h2>
       <table style='width: 100%; border-collapse: collapse; margin-top: 15px;'>
         <tr><td style='padding: 8px; font-weight: bold; width: 140px; color: #555;'>Name:</td><td style='padding: 8px;'>$name</td></tr>
         <tr style='background-color: #f9f9f9;'><td style='padding: 8px; font-weight: bold; color: #555;'>Mobile:</td><td style='padding: 8px;'><a href='tel:$mobile'>$mobile</a></td></tr>
@@ -55,7 +55,7 @@ if ($formType === 'contact') {
         <tr><td style='padding: 8px; font-weight: bold; color: #555; vertical-align: top;'>Message:</td><td style='padding: 8px; line-height: 1.5;'>$msg</td></tr>
       </table>
       <div style='margin-top: 25px; padding-top: 15px; border-top: 1px solid #eeeeee; font-size: 12px; color: #888; text-align: center;'>
-        Sent automatically from Baby Olympic Games Kanpur 2026 Website
+        Sent automatically from Baby Games Kanpur 2026 Website
       </div>
     </div>";
 
@@ -89,7 +89,7 @@ if ($formType === 'contact') {
     $subject = "🏅 New Registration Enquiry [$regId] - " . $childName;
     $body = "
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; background-color: #ffffff;'>
-      <h2 style='color: #3B1264; border-bottom: 2px solid #FFD400; padding-bottom: 10px;'>Baby Olympic Games - Registration Details</h2>
+      <h2 style='color: #3B1264; border-bottom: 2px solid #FFD400; padding-bottom: 10px;'>Baby Games - Registration Details</h2>
       <div style='background-color: #f0e4fa; padding: 12px; border-radius: 6px; font-weight: bold; color: #3B1264; margin-bottom: 15px;'>
         Registration ID: $regId
       </div>
@@ -126,7 +126,7 @@ if ($formType === 'contact') {
       </table>
 
       <div style='margin-top: 25px; padding-top: 15px; border-top: 1px solid #eeeeee; font-size: 12px; color: #888; text-align: center;'>
-        Sent automatically from Baby Olympic Games Kanpur 2026 Website
+        Sent automatically from Baby Games Kanpur 2026 Website
       </div>
     </div>";
 
@@ -141,7 +141,7 @@ if ($formType === 'contact') {
     $subject = "💼 Sponsorship Enquiry from " . ($company !== 'N/A' ? $company : $fullName);
     $body = "
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; background-color: #ffffff;'>
-      <h2 style='color: #3B1264; border-bottom: 2px solid #00B894; padding-bottom: 10px;'>Baby Olympic Games - Sponsorship Enquiry</h2>
+      <h2 style='color: #3B1264; border-bottom: 2px solid #00B894; padding-bottom: 10px;'>Baby Games - Sponsorship Enquiry</h2>
       <table style='width: 100%; border-collapse: collapse; margin-top: 15px;'>
         <tr><td style='padding: 8px; font-weight: bold; width: 140px; color: #555;'>Full Name:</td><td style='padding: 8px;'>$fullName</td></tr>
         <tr style='background-color: #f9f9f9;'><td style='padding: 8px; font-weight: bold; color: #555;'>Company Name:</td><td style='padding: 8px;'>$company</td></tr>
@@ -151,7 +151,7 @@ if ($formType === 'contact') {
         <tr style='background-color: #f9f9f9;'><td style='padding: 8px; font-weight: bold; color: #555; vertical-align: top;'>Message:</td><td style='padding: 8px; line-height: 1.5;'>$message</td></tr>
       </table>
       <div style='margin-top: 25px; padding-top: 15px; border-top: 1px solid #eeeeee; font-size: 12px; color: #888; text-align: center;'>
-        Sent automatically from Baby Olympic Games Kanpur 2026 Website
+        Sent automatically from Baby Games Kanpur 2026 Website
       </div>
     </div>";
 }
@@ -162,13 +162,13 @@ function sendSmtpEmail($host, $port, $user, $pass, $to, $subject, $htmlContent, 
 
     if (!empty($attachments)) {
         $headers  = "MIME-Version: 1.0\r\n";
-        $headers .= "From: Baby Olympic Games <" . $user . ">\r\n";
+        $headers .= "From: Baby Games <" . $user . ">\r\n";
         $headers .= "To: <" . $to . ">\r\n";
         $headers .= "Subject: " . $subject . "\r\n";
         $headers .= "Content-Type: multipart/mixed; boundary=\"" . $boundary . "\"\r\n";
 
         $mailHeaders  = "MIME-Version: 1.0\r\n";
-        $mailHeaders .= "From: Baby Olympic Games <" . $user . ">\r\n";
+        $mailHeaders .= "From: Baby Games <" . $user . ">\r\n";
         $mailHeaders .= "Content-Type: multipart/mixed; boundary=\"" . $boundary . "\"\r\n";
 
         $emailBody  = "--" . $boundary . "\r\n";
@@ -196,13 +196,13 @@ function sendSmtpEmail($host, $port, $user, $pass, $to, $subject, $htmlContent, 
         $emailBody .= "--" . $boundary . "--";
     } else {
         $headers  = "MIME-Version: 1.0\r\n";
-        $headers .= "From: Baby Olympic Games <" . $user . ">\r\n";
+        $headers .= "From: Baby Games <" . $user . ">\r\n";
         $headers .= "To: <" . $to . ">\r\n";
         $headers .= "Subject: " . $subject . "\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
         $mailHeaders  = "MIME-Version: 1.0\r\n";
-        $mailHeaders .= "From: Baby Olympic Games <" . $user . ">\r\n";
+        $mailHeaders .= "From: Baby Games <" . $user . ">\r\n";
         $mailHeaders .= "Content-Type: text/html; charset=UTF-8\r\n";
 
         $emailBody = $htmlContent;

@@ -17,7 +17,7 @@
     </div>
   </noscript>
   <link rel="icon" type="image/png" href="BabyGamesLogo.png">
-  <title>Baby Olympic Games</title>
+  <title>Baby Games</title>
 </head>
 <body>
   <div id="__bundler_thumbnail">
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     <script src="e685b48a-15cf-4985-80b4-d35cb1b50e6c"><\/script>
     <link rel="icon" type="image/png" href="BabyGamesLogo.png">
-  <title>Baby Olympic Games</title>
+  <title>Baby Games</title>
 </head>
   <body>
     <x-dc>
@@ -1441,7 +1441,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           <a class="hd-logo" href="Home.dc.html"
             ><img
               src="BabyGamesLogo.png"
-              alt="Baby Olympic Games 2026"
+              alt="Baby Games 2026"
               style="height: 180px; width: auto; display: block"
           /></a>
           <nav class="hd-links"><a class="hd-link" href="Home.dc.html">Home</a><a class="hd-link" href="About.dc.html">About Event</a><a class="hd-link on" href="Register.dc.html">Register</a><a class="hd-link" href="Contact.dc.html">Contact</a><a class="hd-cta" href="Register.dc.html">Register Now</a></nav>
@@ -1830,7 +1830,7 @@ document.addEventListener('DOMContentLoaded', async function() {
               ><div class="ft-logoCard">
                 <img
                   src="BabyGamesLogo.png"
-                  alt="Baby Olympic Games 2026"
+                  alt="Baby Games 2026"
                   style="height: 170px; width: auto; display: block"
                 /></div
             ></a>
@@ -2004,7 +2004,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 body: JSON.stringify({ formType: 'registration', data: regData })
               }).catch(err => {
                 console.log('Email send fallback:', err);
-                const subject = 'Baby Olympic Games Registration Enquiry - ' + id;
+                const subject = 'Baby Games Registration Enquiry - ' + id;
                 const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
                 window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
               });
@@ -2026,8 +2026,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             photoLabel: f.photoName || 'Tap to upload a photo', certLabel: f.certName || 'Tap to upload the certificate',
             ckT: f.consentTerms ? 'on' : '', ckP: f.consentPhoto ? 'on' : '',
             submitDis: (f.consentTerms && f.consentPhoto) ? '' : 'dis',
-            icsHref: 'data:text/calendar;charset=utf8,' + encodeURIComponent('BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//BOG//Kanpur2026//EN\nBEGIN:VEVENT\nUID:bog-kanpur-2026\nDTSTART:20260908T033000Z\nDTEND:20260911T123000Z\nSUMMARY:Baby Olympic Games Kanpur 2026\nLOCATION:Kanpur\nDESCRIPTION:India\'s youngest sporting movement, ages 2-8.\nEND:VEVENT\nEND:VCALENDAR'),
-            shareHref: 'https://wa.me/?text=' + encodeURIComponent("We just registered for Baby Olympic Games Kanpur 2026! Ages 2-8, 8-11 Sept in Kanpur. Register your little champion too!")
+            icsHref: 'data:text/calendar;charset=utf8,' + encodeURIComponent('BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//BOG//Kanpur2026//EN\nBEGIN:VEVENT\nUID:bog-kanpur-2026\nDTSTART:20260908T033000Z\nDTEND:20260911T123000Z\nSUMMARY:Baby Games Kanpur 2026\nLOCATION:Kanpur\nDESCRIPTION:India\'s youngest sporting movement, ages 2-8.\nEND:VEVENT\nEND:VCALENDAR'),
+            shareHref: 'https://wa.me/?text=' + encodeURIComponent("We just registered for Baby Games Kanpur 2026! Ages 2-8, 8-11 Sept in Kanpur. Register your little champion too!")
           };
         }
       }

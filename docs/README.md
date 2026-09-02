@@ -1,4 +1,4 @@
-Baby Olympic Games Kanpur 2026 — Website Content & Design Handoff			
+Baby Games Kanpur 2026 — Website Content & Design Handoff			
 Ready-to-build copy for the WordPress site + campaign landing page + registration form			
 			
 How this workbook is organised			
