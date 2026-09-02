@@ -256,14 +256,14 @@ if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $userBodyPrefix = "<p>Thank you for reaching out. Here is a copy of your submission:</p>";
     
     if ($formType === 'contact') {
-        $userSubject = "Thank you for contacting Baby Games!";
+        $userSubject = "Thank You for Contacting Us - Baby Games 2026";
         $userBodyPrefix = "<p>Dear " . ($name ?? 'User') . ",</p><p>Thank you for reaching out to us. We have received your enquiry and will get back to you soon. Here is a copy of the details you submitted:</p>";
     } else if ($formType === 'registration') {
-        $userSubject = "Registration Confirmation - Baby Games [" . ($regId ?? '') . "]";
+        $userSubject = "Registration Confirmation - Baby Games 2026";
         $userBodyPrefix = "<p>Dear " . ($parentName ?? 'Parent') . ",</p><p>Thank you for registering " . ($childName ?? 'your child') . " for the Baby Games! Your registration is confirmed. Please save your Registration ID: " . ($regId ?? '') . ". Here are your details:</p>";
     } else if ($formType === 'sponsor') {
         $nameToUse = (!empty($fullName) && $fullName !== 'N/A') ? $fullName : 'Partner';
-        $userSubject = "Thank you for your interest in Sponsoring Baby Games!";
+        $userSubject = "Thank You for Your Interest in Baby Games 2026";
         $userBodyPrefix = "<p>Dear $nameToUse,</p><p>Thank you for your interest in sponsoring the Baby Games. Our team will contact you shortly to discuss partnership opportunities. Here are the details you submitted:</p>";
     }
     
