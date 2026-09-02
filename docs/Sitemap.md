@@ -1,7 +1,7 @@
 4 WordPress pages (all dynamic) + 1 campaign landing page					
 					
 #	Page	URL slug	Sections (in order)	Primary CTA	
-1	Home	/	Hero banner · Countdown timer · Partner strip · About (short) · Why Participate · Event Highlights (5,000+ Kids / 4-Day / Vision 2036) · Age Categories & Format · Sports & Disciplines · Sponsors · FAQ · Footer	Register Now	
+1	Home	/	Hero banner · Countdown timer · Partner strip · About (short) · Why Participate · Event Highlights (5,000+ Kids / 5-Day / Vision 2036) · Age Categories & Format · Sports & Disciplines · Sponsors · FAQ · Footer	Register Now	
 2	About Event	/about	About Baby Games · Objectives · Age Categories & Format · Sports & Disciplines · Event Activities (zones) · Venue Information · Organiser Details	Register Now	
 3	Registration	/register	Intro · Parent Details · Child Details · Emergency Contact · Uploads (optional) · Consent · Submit → Success + Registration ID	Submit Registration	
 4	Contact	/contact	Contact Details · WhatsApp · Email · Google Map · Contact Form	Send Message / WhatsApp	

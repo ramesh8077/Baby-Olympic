@@ -1809,9 +1809,9 @@
             <div class="statSub">Ages 2–8</div>
           </div>
           <div class="statCard" data-reveal="">
-            <div class="statNum">4 Days</div>
+            <div class="statNum">5 Days</div>
             <div class="statLab">Of Sporting Fun</div>
-            <div class="statSub">8–11 September 2026</div>
+            <div class="statSub">5–9 October 2026</div>
           </div>
           <div class="statCard" data-reveal="">
             <div class="statNum">{{footTxt}}</div>
@@ -2909,7 +2909,7 @@
           </details>
           <details class="faqItem">
             <summary class="faqQ"><span>When and where is it happening?</span><span class="faqPlus">+</span></summary>
-            <p class="faqA">8–11 September 2026 in Kanpur. Full venue address will be shared after registration.</p>
+            <p class="faqA">5–9 October 2026 in Kanpur. Full venue address will be shared after registration.</p>
           </details>
           <details class="faqItem">
             <summary class="faqQ"><span>Is there a registration fee?</span><span class="faqPlus">+</span></summary>
@@ -2952,7 +2952,7 @@
           <div class="ft-h">Contact</div>
           <div class="ft-links"><a class="ft-link" href="https://wa.me/919911892043">WhatsApp: 9911892043</a><a
               class="ft-link" href="mailto:babyolympicgames@gmail.com">babyolympicgames@gmail.com</a><span
-              class="ft-link">Kanpur · 8–11 Sept 2026</span></div>
+              class="ft-link">Kanpur · 5–9 Oct 2026</span></div>
         </div>
         <div>
           <div class="ft-h"
@@ -3047,7 +3047,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { clearInterval(this._iv); clearInterval(this._sliderIv); clearInterval(this._sportsIv); if (this._io) this._io.disconnect(); if (this._io2) this._io2.disconnect(); if (this._sportsScrollHandler) { const sl = document.getElementById('sportsSlider'); if (sl) sl.removeEventListener('scroll', this._sportsScrollHandler); } }
   tick() {
-    const target = new Date('2026-09-08T09:00:00+05:30').getTime();
+    const target = new Date('2026-10-05T09:00:00+05:30').getTime();
     let ms = Math.max(0, target - Date.now());
     const d = Math.floor(ms / 864e5); ms -= d * 864e5;
     const h = Math.floor(ms / 36e5); ms -= h * 36e5;

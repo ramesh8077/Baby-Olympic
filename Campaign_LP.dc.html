@@ -1202,7 +1202,7 @@
             alt="Who will represent India at the Olympics in 2036? Maybe they are only 2, 3 or 6 years old today.">
         </div>
         <div>
-          <div class="kicker"><span class="star">★</span>Ages 2–8 · 8–11 Sept 2026 · Kanpur</div>
+          <div class="kicker"><span class="star">★</span>Ages 2–8 · 5–9 Oct 2026 · Kanpur</div>
           <h1 class="h1">Give Your Little Champion an <span class="pink">Olympic First Step</span></h1>
           <div class="tickRow"><span class="tickMark">✓</span>
             <p>Every child gets a medal &amp; certificate</p>
@@ -1415,7 +1415,7 @@
           <div class="ft-h">Contact</div>
           <div class="ft-links"><a class="ft-link" href="https://wa.me/919911892043">WhatsApp: 9911892043</a><a
               class="ft-link" href="mailto:babyolympicgames@gmail.com">babyolympicgames@gmail.com</a><span
-              class="ft-link">Kanpur · 8–11 Sept 2026</span></div>
+              class="ft-link">Kanpur · 5–9 Oct 2026</span></div>
         </div>
         <div>
           <div class="ft-h">Follow the Fun</div>
@@ -1453,7 +1453,7 @@ class Component extends DCLogic {
   componentDidMount() { this.tick(); this._iv = setInterval(() => this.tick(), 1000); }
   componentWillUnmount() { clearInterval(this._iv); }
   tick() {
-    const target = new Date('2026-09-08T09:00:00+05:30').getTime();
+    const target = new Date('2026-10-05T09:00:00+05:30').getTime();
     let ms = Math.max(0, target - Date.now());
     const d = Math.floor(ms / 864e5); ms -= d * 864e5;
     const h = Math.floor(ms / 36e5); ms -= h * 36e5;
@@ -1466,7 +1466,7 @@ class Component extends DCLogic {
     if (!dob) return null;
     const d = new Date(dob + 'T00:00:00');
     if (isNaN(d)) return null;
-    const ev = new Date('2026-09-08T00:00:00');
+    const ev = new Date('2026-10-05T00:00:00');
     let a = ev.getFullYear() - d.getFullYear();
     const m = ev.getMonth() - d.getMonth();
     if (m < 0 || (m === 0 && ev.getDate() < d.getDate())) a--;
@@ -1491,7 +1491,7 @@ class Component extends DCLogic {
         if (f.child.trim().length < 2) { e.child = "Please enter your child's name."; ok = false; }
         const a = this.ageAtEvent(f.dob);
         if (a === null) { e.dob = 'Please pick a date of birth.'; ok = false; }
-        else if (a < 2 || a > 8) { e.dob = 'Child must be 2–8 years old on 8 Sept 2026.'; ok = false; }
+        else if (a < 2 || a > 8) { e.dob = 'Child must be 2–8 years old on 5 Oct 2026.'; ok = false; }
         this.setState({ e });
         if (!ok) return;
         const subject = 'Baby Games Quick Registration Enquiry'; const body = ['New quick registration enquiry:', 'Parent Name: ' + f.parent, 'Mobile: ' + f.mobile, 'Child Name: ' + f.child, 'Child DOB: ' + f.dob, 'Category: ' + (age !== null && age >= 2 && age <= 8 ? catNames[Math.min(6, Math.max(2, age))] : 'to be confirmed')].join('\n'); window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); this.setState({ sent: true });

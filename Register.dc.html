@@ -1911,7 +1911,7 @@
               <a class="ft-link" href="https://wa.me/919911892043">WhatsApp: 9911892043</a
               ><a class="ft-link" href="mailto:babyolympicgames@gmail.com"
                 >babyolympicgames@gmail.com</a
-              ><span class="ft-link">Kanpur · 8–11 Sept 2026</span>
+              ><span class="ft-link">Kanpur · 5–9 Oct 2026</span>
             </div>
           </div>
           <div>
@@ -1948,7 +1948,7 @@
           if (!this.state.f.dob) return null;
           const d = new Date(this.state.f.dob + 'T00:00:00');
           if (isNaN(d)) return null;
-          const ev = new Date('2026-09-08T00:00:00');
+          const ev = new Date('2026-10-05T00:00:00');
           let a = ev.getFullYear() - d.getFullYear();
           const m = ev.getMonth() - d.getMonth();
           if (m < 0 || (m === 0 && ev.getDate() < d.getDate())) a--;
@@ -1978,7 +1978,7 @@
             if (f.childName.trim().length < 2) fail('childName', "Please enter your child's name.");
             const a = this.ageAtEvent();
             if (a === null) fail('dob', 'Please pick a date of birth.');
-            else if (a < 2 || a > 8) fail('dob', 'Your child must be 2–8 years old on 8 Sept 2026.');
+            else if (a < 2 || a > 8) fail('dob', 'Your child must be 2–8 years old on 5 Oct 2026.');
             if (!f.gender) fail('gender', 'Please select one.');
             if (!f.games.length) fail('games', 'Pick at least one game.');
           }
@@ -2081,8 +2081,8 @@
             photoLabel: f.photoName || 'Tap to upload a photo', certLabel: f.certName || 'Tap to upload the certificate',
             ckT: f.consentTerms ? 'on' : '', ckP: f.consentPhoto ? 'on' : '',
             submitDis: (f.consentTerms && f.consentPhoto) ? '' : 'dis',
-            icsHref: 'data:text/calendar;charset=utf8,' + encodeURIComponent('BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//BOG//Kanpur2026//EN\nBEGIN:VEVENT\nUID:bog-kanpur-2026\nDTSTART:20260908T033000Z\nDTEND:20260911T123000Z\nSUMMARY:Baby Games Kanpur 2026\nLOCATION:Kanpur\nDESCRIPTION:India\'s youngest sporting movement, ages 2-8.\nEND:VEVENT\nEND:VCALENDAR'),
-            shareHref: 'https://wa.me/?text=' + encodeURIComponent("We just registered for Baby Games Kanpur 2026! Ages 2-8, 8-11 Sept in Kanpur. Register your little champion too!")
+            icsHref: 'data:text/calendar;charset=utf8,' + encodeURIComponent('BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//BOG//Kanpur2026//EN\nBEGIN:VEVENT\nUID:bog-kanpur-2026\nDTSTART:20261005T033000Z\nDTEND:20261009T123000Z\nSUMMARY:Baby Games Kanpur 2026\nLOCATION:Kanpur\nDESCRIPTION:India\'s youngest sporting movement, ages 2-8.\nEND:VEVENT\nEND:VCALENDAR'),
+            shareHref: 'https://wa.me/?text=' + encodeURIComponent("We just registered for Baby Games Kanpur 2026! Ages 2-8, 5-9 Oct in Kanpur. Register your little champion too!")
           };
         }
       }
