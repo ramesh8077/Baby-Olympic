@@ -69,6 +69,7 @@
   </noscript>
   <link rel="icon" type="image/png" href="BabyGamesLogo.png">
   <title>Baby Games</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 
 <body>
@@ -1842,7 +1843,7 @@
               <div class="btnrow">
                 <button class="btn btnGhost" sc-camel-on-click="{{back}}">← Back</button
                 ><button class="btn btnGold {{submitDis}}" sc-camel-on-click="{{submit}}">
-                  Submit Registration
+                  Pay ₹250 & Submit Registration
                 </button>
               </div>
             </sc-if>
@@ -2051,26 +2052,56 @@
             back: () => { this.setState({ step: Math.max(1, st.step - 1) }); window.scrollTo({ top: 0, behavior: 'smooth' }); },
             submit: () => {
               if (!this.validate(4)) return;
-              const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
-              const regData = { ...f, regId: id, category: (cat ? cat.name : 'to be confirmed') };
-              fetch('send-email.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ formType: 'registration', data: regData })
-              }).catch(err => {
-                console.log('Email send fallback:', err);
-                const subject = 'Baby Games Registration Enquiry - ' + id;
-                const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
-                window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-              });
-              const colors = ['#FF3FA4', '#FFD400', '#4CD3C2', '#8B3FE8', '#3B1264'];
-              const confetti = Array.from({ length: 46 }, (_, i) => ({
-                left: (Math.random() * 100).toFixed(1) + '%', background: colors[i % colors.length],
-                width: (7 + Math.random() * 8).toFixed(0) + 'px', height: (10 + Math.random() * 10).toFixed(0) + 'px',
-                animationDelay: (Math.random() * 1.2).toFixed(2) + 's', animationDuration: (2.4 + Math.random() * 2.4).toFixed(2) + 's'
-              }));
-              this.setState({ success: true, regId: id, confetti });
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+
+              const options = {
+                "key": "rzp_test_dummykey_replace_me", // Enter the Key ID generated from the Dashboard
+                "amount": "25000", // Amount is in currency subunits. 25000 paise = ₹250
+                "currency": "INR",
+                "name": "Baby Olympic Games",
+                "description": "Registration Fee",
+                "image": "BabyGamesLogo.png",
+                "handler": (response) => {
+                  // Payment successful! Proceed to register
+                  const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
+                  const regData = { ...f, regId: id, category: (cat ? cat.name : 'to be confirmed'), paymentId: response.razorpay_payment_id };
+                  
+                  fetch('send-email.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ formType: 'registration', data: regData })
+                  }).catch(err => {
+                    console.log('Email send fallback:', err);
+                    const subject = 'Baby Games Registration Enquiry - ' + id;
+                    const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Payment ID: ' + response.razorpay_payment_id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
+                    window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                  });
+                  
+                  const colors = ['#FF3FA4', '#FFD400', '#4CD3C2', '#8B3FE8', '#3B1264'];
+                  const confetti = Array.from({ length: 46 }, (_, i) => ({
+                    left: (Math.random() * 100).toFixed(1) + '%', background: colors[i % colors.length],
+                    width: (7 + Math.random() * 8).toFixed(0) + 'px', height: (10 + Math.random() * 10).toFixed(0) + 'px',
+                    animationDelay: (Math.random() * 1.2).toFixed(2) + 's', animationDuration: (2.4 + Math.random() * 2.4).toFixed(2) + 's'
+                  }));
+                  
+                  this.setState({ success: true, regId: id, confetti });
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
+                "prefill": {
+                  "name": f.parentName,
+                  "email": f.email,
+                  "contact": f.mobile
+                },
+                "theme": {
+                  "color": "#8B3FE8"
+                }
+              };
+
+              if (window.Razorpay) {
+                const rzp1 = new window.Razorpay(options);
+                rzp1.open();
+              } else {
+                alert("Payment gateway is currently loading or unavailable. Please try again later.");
+              }
             },
             parentFirst: (f.parentName.trim().split(' ')[0] || 'champion'),
             catEmoji: cat ? cat.emoji : '⭐',
