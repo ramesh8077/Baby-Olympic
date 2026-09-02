@@ -35,6 +35,7 @@ $smtpPass = "cxqmazxwadaydnmy";
 $subject = "New Enquiry - Baby Games";
 $body = "";
 $attachments = [];
+$email = null;
 
 if ($formType === 'contact') {
     $name = htmlspecialchars($data['name'] ?? 'N/A');
@@ -245,11 +246,35 @@ function sendSmtpEmail($host, $port, $user, $pass, $to, $subject, $htmlContent, 
     return true;
 }
 
-$sent = sendSmtpEmail($smtpHost, $smtpPort, $smtpUser, $smtpPass, $toEmail, $subject, $body, $attachments);
+// Send email to Admin
+$sentAdmin = sendSmtpEmail($smtpHost, $smtpPort, $smtpUser, $smtpPass, $toEmail, $subject, $body, $attachments);
 
-if ($sent) {
-    echo json_encode(["success" => true, "message" => "Email sent successfully to " . $toEmail]);
+// Send confirmation email to User
+$sentUser = false;
+if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $userSubject = "Thank you - Baby Games";
+    $userBodyPrefix = "<p>Thank you for reaching out. Here is a copy of your submission:</p>";
+    
+    if ($formType === 'contact') {
+        $userSubject = "Thank you for contacting Baby Games!";
+        $userBodyPrefix = "<p>Dear " . ($name ?? 'User') . ",</p><p>Thank you for reaching out to us. We have received your enquiry and will get back to you soon. Here is a copy of the details you submitted:</p>";
+    } else if ($formType === 'registration') {
+        $userSubject = "Registration Confirmation - Baby Games [" . ($regId ?? '') . "]";
+        $userBodyPrefix = "<p>Dear " . ($parentName ?? 'Parent') . ",</p><p>Thank you for registering " . ($childName ?? 'your child') . " for the Baby Games! Your registration is confirmed. Please save your Registration ID: " . ($regId ?? '') . ". Here are your details:</p>";
+    } else if ($formType === 'sponsor') {
+        $nameToUse = (!empty($fullName) && $fullName !== 'N/A') ? $fullName : 'Partner';
+        $userSubject = "Thank you for your interest in Sponsoring Baby Games!";
+        $userBodyPrefix = "<p>Dear $nameToUse,</p><p>Thank you for your interest in sponsoring the Baby Games. Our team will contact you shortly to discuss partnership opportunities. Here are the details you submitted:</p>";
+    }
+    
+    $userBody = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f7f1fd; border-radius: 10px; margin-bottom: 20px; color: #3B1264;'>" . $userBodyPrefix . "</div>" . $body;
+    
+    $sentUser = sendSmtpEmail($smtpHost, $smtpPort, $smtpUser, $smtpPass, $email, $userSubject, $userBody, []);
+}
+
+if ($sentAdmin) {
+    echo json_encode(["success" => true, "message" => "Emails processed successfully"]);
 } else {
-    echo json_encode(["success" => false, "error" => "Failed to send email"]);
+    echo json_encode(["success" => false, "error" => "Failed to send email to admin"]);
 }
 ?>
