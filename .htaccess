@@ -1,0 +1,10 @@
+DirectoryIndex index.html
+
+RewriteEngine On
+RewriteRule ^about/?$ about.html [NC,L]
+RewriteRule ^campaign/?$ campaign.html [NC,L]
+RewriteRule ^contact/?$ contact.html [NC,L]
+RewriteRule ^register/?$ register.html [NC,L]
+RewriteRule ^sponsor/?$ sponsor.html [NC,L]
+RewriteRule ^privacy-policy/?$ privacy-policy.html [NC,L]
+RewriteRule ^terms/?$ terms.html [NC,L]
