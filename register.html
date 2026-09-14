@@ -82,6 +82,24 @@
   <div id="__bundler_loading">Unpacking...</div>
 
   <script>
+    window.showToast = function(msg, isError = false) {
+      let t = document.getElementById('__bog_toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = '__bog_toast';
+        t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:8px;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;font-weight:500;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:opacity 0.3s, transform 0.3s;opacity:0;pointer-events:none;text-align:center;max-width:90%;';
+        document.body.appendChild(t);
+      }
+      t.style.background = isError ? '#e53e3e' : '#38a169';
+      t.textContent = msg;
+      t.style.opacity = '1';
+      t.style.transform = 'translateX(-50%) translateY(0)';
+      if (window.__bog_toast_timer) clearTimeout(window.__bog_toast_timer);
+      window.__bog_toast_timer = setTimeout(() => { 
+        t.style.opacity = '0'; 
+        t.style.transform = 'translateX(-50%) translateY(-10px)'; 
+      }, 3000);
+    };
 
     document.addEventListener('DOMContentLoaded', async function () {
       const loading = document.getElementById('__bundler_loading');
@@ -2010,7 +2028,7 @@
                 const file = t.files && t.files[0];
                 if (file) {
                   if (file.size > 5 * 1024 * 1024) {
-                    alert('File size exceeds 5MB limit. Please select a smaller file.');
+                    window.showToast('File size exceeds 5MB limit. Please select a smaller file.', true);
                     t.value = '';
                     return;
                   }
@@ -2050,57 +2068,96 @@
             },
             next: () => { if (this.validate(st.step)) { this.setState({ step: st.step + 1 }); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
             back: () => { this.setState({ step: Math.max(1, st.step - 1) }); window.scrollTo({ top: 0, behavior: 'smooth' }); },
-            submit: () => {
+            submit: async () => {
               if (!this.validate(4)) return;
 
-              const options = {
-                "key": "rzp_test_dummykey_replace_me", // Enter the Key ID generated from the Dashboard
-                "amount": "25000", // Amount is in currency subunits. 25000 paise = ₹250
-                "currency": "INR",
-                "name": "Baby Games",
-                "description": "Registration Fee",
-                "image": "BabyGamesLogo.png",
-                "handler": (response) => {
-                  // Payment successful! Proceed to register
-                  const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
-                  const regData = { ...f, regId: id, category: (cat ? cat.name : 'to be confirmed'), paymentId: response.razorpay_payment_id };
-                  
-                  fetch('send-email.php', {
+              window.showToast('Initializing secure payment...', false);
+
+              try {
+                const orderRes = await fetch('api/create-order.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ formType: 'registration', data: regData })
-                  }).catch(err => {
-                    console.log('Email send fallback:', err);
-                    const subject = 'Baby Games Registration Enquiry - ' + id;
-                    const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Payment ID: ' + response.razorpay_payment_id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
-                    window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-                  });
-                  
-                  const colors = ['#FF3FA4', '#FFD400', '#4CD3C2', '#8B3FE8', '#3B1264'];
-                  const confetti = Array.from({ length: 46 }, (_, i) => ({
-                    left: (Math.random() * 100).toFixed(1) + '%', background: colors[i % colors.length],
-                    width: (7 + Math.random() * 8).toFixed(0) + 'px', height: (10 + Math.random() * 10).toFixed(0) + 'px',
-                    animationDelay: (Math.random() * 1.2).toFixed(2) + 's', animationDuration: (2.4 + Math.random() * 2.4).toFixed(2) + 's'
-                  }));
-                  
-                  this.setState({ success: true, regId: id, confetti });
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                },
-                "prefill": {
-                  "name": f.parentName,
-                  "email": f.email,
-                  "contact": f.mobile
-                },
-                "theme": {
-                  "color": "#8B3FE8"
-                }
-              };
+                    body: JSON.stringify({
+                        amount: 25000, // 25000 paise = ₹250
+                        currency: 'INR',
+                        receipt: 'rcpt_' + Date.now()
+                    })
+                });
+                const orderData = await orderRes.json();
+                if (!orderRes.ok) throw new Error(orderData.error || 'Failed to create order');
 
-              if (window.Razorpay) {
-                const rzp1 = new window.Razorpay(options);
-                rzp1.open();
-              } else {
-                alert("Payment gateway is currently loading or unavailable. Please try again later.");
+                const options = {
+                  "key": orderData.key_id,
+                  "amount": orderData.amount,
+                  "currency": orderData.currency,
+                  "name": "Baby Games",
+                  "description": "Registration Fee",
+                  "image": "BabyGamesLogo.png",
+                  "order_id": orderData.order_id,
+                  "handler": async (response) => {
+                    window.showToast('Verifying payment...', false);
+                    try {
+                        const verifyRes = await fetch('api/verify-payment.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        });
+                        const verifyData = await verifyRes.json();
+                        if (!verifyRes.ok) throw new Error(verifyData.error || 'Payment verification failed');
+                        
+                        window.showToast('Payment successful!', false);
+                        const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
+                        const regData = { ...f, regId: id, category: (cat ? cat.name : 'to be confirmed'), paymentId: response.razorpay_payment_id };
+                        
+                        fetch('send-email.php', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ formType: 'registration', data: regData })
+                        }).catch(err => {
+                          console.log('Email send fallback:', err);
+                          const subject = 'Baby Games Registration Enquiry - ' + id;
+                          const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Payment ID: ' + response.razorpay_payment_id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
+                          window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                        });
+                        
+                        const colors = ['#FF3FA4', '#FFD400', '#4CD3C2', '#8B3FE8', '#3B1264'];
+                        const confetti = Array.from({ length: 46 }, (_, i) => ({
+                          left: (Math.random() * 100).toFixed(1) + '%', background: colors[i % colors.length],
+                          width: (7 + Math.random() * 8).toFixed(0) + 'px', height: (10 + Math.random() * 10).toFixed(0) + 'px',
+                          animationDelay: (Math.random() * 1.2).toFixed(2) + 's', animationDuration: (2.4 + Math.random() * 2.4).toFixed(2) + 's'
+                        }));
+                        
+                        this.setState({ success: true, regId: id, confetti });
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } catch (err) {
+                        window.showToast(err.message, true);
+                    }
+                  },
+                  "prefill": {
+                    "name": f.parentName,
+                    "email": f.email,
+                    "contact": f.mobile
+                  },
+                  "theme": {
+                    "color": "#8B3FE8"
+                  }
+                };
+
+                if (window.Razorpay) {
+                  const rzp1 = new window.Razorpay(options);
+                  rzp1.on('payment.failed', function (response) {
+                      window.showToast('Payment failed: ' + response.error.description, true);
+                  });
+                  rzp1.open();
+                } else {
+                  window.showToast("Payment gateway is currently loading or unavailable. Please try again later.", true);
+                }
+              } catch (err) {
+                window.showToast(err.message, true);
               }
             },
             parentFirst: (f.parentName.trim().split(' ')[0] || 'champion'),

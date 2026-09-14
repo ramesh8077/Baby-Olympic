@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Checkout - Baby Olympic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .checkout-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-container">
+        <h2>Baby Olympic Registration</h2>
+        <div class="price">₹500.00</div>
+        <p>Complete your payment to secure your spot.</p>
+        
+        <button id="rzp-button1">Pay Now</button>
+        <div id="message"></div>
+    </div>
+
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        const payButton = document.getElementById('rzp-button1');
+        const messageDiv = document.getElementById('message');
+
+        function showMessage(msg, isError = false) {
+            messageDiv.textContent = msg;
+            messageDiv.className = isError ? 'error' : 'success';
+        }
+
+        payButton.onclick = async function (e) {
+            e.preventDefault();
+            payButton.disabled = true;
+            showMessage('Initializing payment...');
+
+            try {
+                // 1. Create order on the backend
+                const orderResponse = await fetch('/api/create-order.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: 50000, // 500 INR in paise
+                        currency: 'INR',
+                        receipt: 'rcpt_' + Date.now()
+                    })
+                });
+
+                const orderData = await orderResponse.json();
+
+                if (!orderResponse.ok) {
+                    throw new Error(orderData.error || 'Failed to create order');
+                }
+
+                // 2. Configure Razorpay checkout options
+                const options = {
+                    "key": orderData.key_id, 
+                    "amount": orderData.amount,
+                    "currency": orderData.currency,
+                    "name": "Baby Olympic",
+                    "description": "Registration Fee",
+                    "order_id": orderData.order_id,
+                    "handler": async function (response) {
+                        // 3. Verify payment signature on the backend
+                        showMessage('Verifying payment...');
+                        try {
+                            const verifyResponse = await fetch('/api/verify-payment.php', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+                            
+                            const verifyData = await verifyResponse.json();
+                            
+                            if (!verifyResponse.ok) {
+                                throw new Error(verifyData.error || 'Payment verification failed');
+                            }
+
+                            showMessage('Payment successful and verified!');
+                        } catch (err) {
+                            showMessage(err.message, true);
+                        } finally {
+                            payButton.disabled = false;
+                        }
+                    },
+                    "theme": {
+                        "color": "#007bff"
+                    }
+                };
+
+                const rzp1 = new Razorpay(options);
+                
+                // Handle payment failed event
+                rzp1.on('payment.failed', function (response) {
+                    showMessage('Payment failed: ' + response.error.description, true);
+                    payButton.disabled = false;
+                });
+
+                // Handle modal dismiss (user cancelled)
+                rzp1.on('payment.closed', function() {
+                    // Check if payment was actually successful, if not, show message
+                    if (messageDiv.textContent === 'Initializing payment...') {
+                        showMessage('Payment window closed by user.', true);
+                        payButton.disabled = false;
+                    }
+                });
+
+                // Open Razorpay Checkout modal
+                rzp1.open();
+                showMessage('Please complete the payment in the window...');
+                
+            } catch (err) {
+                showMessage(err.message, true);
+                payButton.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
