@@ -8,3 +8,8 @@ RewriteRule ^register/?$ register.html [NC,L]
 RewriteRule ^sponsor/?$ sponsor.html [NC,L]
 RewriteRule ^privacy-policy/?$ privacy-policy.html [NC,L]
 RewriteRule ^terms/?$ terms.html [NC,L]
+
+# Block access to sensitive files
+<FilesMatch "^\.env|composer\.json|composer\.lock|secrets\.php$">
+    Require all denied
+</FilesMatch>

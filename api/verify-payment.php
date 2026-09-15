@@ -48,6 +48,34 @@ try {
     // Will throw SignatureVerificationError if signature is invalid
     $api->utility->verifyPaymentSignature($attributes);
     
+    // --- Notify Admin Panel about successful payment ---
+    $admin_api_url = $_ENV['ADMIN_API_URL'] ?? 'https://admin.babyolympic.com';
+    $admin_api_key = $_ENV['ADMIN_API_KEY'] ?? 'bog-2026-public-api-key';
+    $registration_db_id = $input['registration_db_id'] ?? null;
+    $payment_amount = $input['amount'] ?? 25000; // paise
+
+    if ($registration_db_id) {
+        $payment_payload = json_encode([
+            'registrationId' => $registration_db_id,
+            'razorpayPaymentId' => $razorpay_payment_id,
+            'razorpayOrderId' => $razorpay_order_id,
+            'amount' => (int)$payment_amount
+        ]);
+
+        $ch = curl_init($admin_api_url . '/api/public/payment-success');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payment_payload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'x-api-key: ' . $admin_api_key
+        ]);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        curl_exec($ch);
+        curl_close($ch);
+    }
+    // --- End Admin Panel Notification ---
+    
     echo json_encode([
         'status' => 'success', 
         'message' => 'Payment verified successfully'

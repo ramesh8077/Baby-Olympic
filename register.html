@@ -2073,7 +2073,44 @@
 
               window.showToast('Initializing secure payment...', false);
 
+              const ADMIN_API = 'https://admin.babyolympic.com';
+              const ADMIN_KEY = 'bog-2026-public-api-key';
+              let registrationDbId = null;
+
               try {
+                // Step 1: Register with Admin Panel (creates a 'pending' registration)
+                try {
+                  const regRes = await fetch(ADMIN_API + '/api/public/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-api-key': ADMIN_KEY },
+                    body: JSON.stringify({
+                      childName: f.childName,
+                      parentName: f.parentName,
+                      phone: f.mobile,
+                      email: f.email,
+                      dob: f.dob,
+                      gender: f.gender,
+                      age: age,
+                      category: cat ? cat.name : '',
+                      games: f.games,
+                      city: f.city,
+                      state: f.state,
+                      school: f.school || '',
+                      medical: f.medical || '',
+                      emName: f.emName,
+                      emPhone: f.emPhone,
+                      regId: 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000))
+                    })
+                  });
+                  if (regRes.ok) {
+                    const regJson = await regRes.json();
+                    registrationDbId = regJson.registrationId || null;
+                  }
+                } catch (adminErr) {
+                  console.warn('Admin panel sync (register) failed, continuing with payment:', adminErr);
+                }
+
+                // Step 2: Create Razorpay Order
                 const orderRes = await fetch('api/create-order.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2097,20 +2134,37 @@
                   "handler": async (response) => {
                     window.showToast('Verifying payment...', false);
                     try {
+                        // Step 3: Verify payment (PHP will also notify admin panel)
                         const verifyRes = await fetch('api/verify-payment.php', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 razorpay_payment_id: response.razorpay_payment_id,
                                 razorpay_order_id: response.razorpay_order_id,
-                                razorpay_signature: response.razorpay_signature
+                                razorpay_signature: response.razorpay_signature,
+                                registration_db_id: registrationDbId,
+                                amount: 25000
                             })
                         });
                         const verifyData = await verifyRes.json();
                         if (!verifyRes.ok) throw new Error(verifyData.error || 'Payment verification failed');
                         
+                        // Step 4: Backup - also notify admin panel from frontend
+                        if (registrationDbId) {
+                          fetch(ADMIN_API + '/api/public/payment-success', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'x-api-key': ADMIN_KEY },
+                            body: JSON.stringify({
+                              registrationId: registrationDbId,
+                              razorpayPaymentId: response.razorpay_payment_id,
+                              razorpayOrderId: response.razorpay_order_id,
+                              amount: 25000
+                            })
+                          }).catch(e => console.warn('Admin payment sync fallback error:', e));
+                        }
+
                         window.showToast('Payment successful!', false);
-                        const id = 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000));
+                        const id = registrationDbId ? ('BOG-' + registrationDbId.substring(0, 8)) : ('BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000)));
                         const regData = { ...f, regId: id, category: (cat ? cat.name : 'to be confirmed'), paymentId: response.razorpay_payment_id };
                         
                         fetch('send-email.php', {
@@ -2120,7 +2174,7 @@
                         }).catch(err => {
                           console.log('Email send fallback:', err);
                           const subject = 'Baby Games Registration Enquiry - ' + id;
-                          const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Payment ID: ' + response.razorpay_payment_id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\n');
+                          const body = ['New registration enquiry:', 'Registration ID: ' + id, 'Payment ID: ' + response.razorpay_payment_id, 'Parent Name: ' + f.parentName, 'Mobile: ' + f.mobile, 'Email: ' + f.email, 'City: ' + f.city, 'State: ' + f.state, 'Child Name: ' + f.childName, 'Child DOB: ' + f.dob, 'Gender: ' + f.gender, 'Category: ' + (cat ? cat.name : 'to be confirmed'), 'Games: ' + f.games.join(', '), 'School: ' + (f.school || 'Not provided'), 'Medical Notes: ' + (f.medical || 'None'), 'Emergency Contact: ' + f.emName, 'Emergency Phone: ' + f.emPhone].join('\\n');
                           window.location.href = 'mailto:babyolympicgames@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
                         });
                         
