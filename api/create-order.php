@@ -15,15 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $input = json_decode(file_get_contents('php://input'), true);
-$amount = isset($input['amount']) ? (int)$input['amount'] : 0;
+$amount = 25000; // Hardcoded to 25000 paise (₹250) to prevent frontend tampering
 $currency = isset($input['currency']) ? $input['currency'] : 'INR';
 $receipt = isset($input['receipt']) ? $input['receipt'] : 'receipt_' . time();
-
-if ($amount < 100) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Amount must be at least 100 paise']);
-    exit;
-}
 
 $keyId = $_ENV['RAZORPAY_KEY_ID'] ?? null;
 $keySecret = $_ENV['RAZORPAY_KEY_SECRET'] ?? null;

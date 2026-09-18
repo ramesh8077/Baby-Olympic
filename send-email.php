@@ -19,11 +19,16 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->safeLoad();
 }
 
-$gmailAddress = $_ENV['BABY_OLYMPIC_GMAIL_ADDRESS'] ?? getenv('BABY_OLYMPIC_GMAIL_ADDRESS');
-$gmailAppPassword = $_ENV['BABY_OLYMPIC_GMAIL_APP_PASSWORD'] ?? getenv('BABY_OLYMPIC_GMAIL_APP_PASSWORD');
-$adminEmail = $_ENV['BABY_OLYMPIC_ADMIN_EMAIL'] ?? getenv('BABY_OLYMPIC_ADMIN_EMAIL') ?: $gmailAddress;
+$secretsFile = dirname(__DIR__) . '/secrets.php';
+if (file_exists($secretsFile)) {
+    require_once $secretsFile;
+}
 
-if ($gmailAddress === false || $gmailAddress === '' || $gmailAppPassword === false || $gmailAppPassword === '' || $adminEmail === false || $adminEmail === '') {
+$gmailAddress = trim(getenv('BABY_OLYMPIC_GMAIL_ADDRESS') ?: ($_ENV['BABY_OLYMPIC_GMAIL_ADDRESS'] ?? ''));
+$gmailAppPassword = trim(getenv('BABY_OLYMPIC_GMAIL_APP_PASSWORD') ?: ($_ENV['BABY_OLYMPIC_GMAIL_APP_PASSWORD'] ?? ''));
+$adminEmail = trim(getenv('BABY_OLYMPIC_ADMIN_EMAIL') ?: ($_ENV['BABY_OLYMPIC_ADMIN_EMAIL'] ?? $gmailAddress));
+
+if ($gmailAddress === '' || $gmailAppPassword === '' || $adminEmail === '') {
     respond(500, ['success' => false, 'error' => 'Email service is not configured.']);
 }
 
@@ -47,15 +52,15 @@ if (stripos($contentType, 'application/json') !== false) {
         respond(400, ['success' => false, 'error' => 'Invalid JSON request']);
     }
     $data = isset($decoded['data']) && is_array($decoded['data'])
-        ? $decoded['data']
+        ? array_merge($decoded['data'], ['formType' => $decoded['formType'] ?? ''])
         : $decoded;
 } else {
     $data = $_POST;
 }
 
     $formType = strtolower(clean($data['formType'] ?? ''));
-    $name = clean($data['name'] ?? $data['parentName'] ?? '');
-    $mobile = clean($data['mobile'] ?? '');
+    $name = clean($data['name'] ?? $data['parentName'] ?? $data['fullName'] ?? $data['company'] ?? '');
+    $mobile = clean($data['mobile'] ?? $data['phone'] ?? '');
     $email = clean($data['email'] ?? '');
     $city = clean($data['city'] ?? '');
     $preferredModel = clean($data['preferredModel'] ?? $data['preferred_model'] ?? $data['model'] ?? implode(', ', (array) ($data['games'] ?? '')));
@@ -93,18 +98,76 @@ HTML;
 function configureMailer(string $gmailAddress, string $gmailAppPassword): PHPMailer
 {
     $mail = new PHPMailer(true);
+    $mail->SMTPDebug = 3;
+    $mail->Debugoutput = function($str, $level) {
+        file_put_contents(__DIR__ . '/mail_debug.log', $str, FILE_APPEND);
+    };
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = $gmailAddress;
     $mail->Password = $gmailAppPassword;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Try 587 STARTTLS again
+    $mail->Port = 587; 
     $mail->CharSet = 'UTF-8';
     $mail->isHTML(true);
     $mail->setFrom($gmailAddress, 'Baby Olympic Games');
     return $mail;
 }
+
+// --- Notify Admin Panel (MOVED BEFORE EMAIL SEND) ---
+$admin_api_url = $_ENV['ADMIN_API_URL'] ?? getenv('ADMIN_API_URL') ?: 'https://admin.babyolympic.com';
+$admin_api_key = $_ENV['ADMIN_API_KEY'] ?? getenv('ADMIN_API_KEY') ?: 'bog-2026-public-api-key';
+
+if ($formType === 'registration') {
+    $endpoint = '/api/public/register';
+    $payload = json_encode([
+        'childName' => clean($data['childName'] ?? ''),
+        'parentName' => clean($data['parentName'] ?? $name),
+        'phone' => clean($data['phone'] ?? $data['mobile'] ?? $mobile),
+        'email' => clean($data['email'] ?? $email),
+        'dob' => clean($data['dob'] ?? ''),
+        'age' => isset($data['age']) ? (int)$data['age'] : null,
+        'category' => clean($data['category'] ?? ''),
+        'games' => isset($data['games']) && is_array($data['games']) ? $data['games'] : [],
+        'city' => clean($data['city'] ?? $city),
+        'state' => clean($data['state'] ?? ''),
+        'school' => clean($data['school'] ?? ''),
+        'medical' => clean($data['medical'] ?? ''),
+        'regId' => clean($data['regId'] ?? '')
+    ]);
+} else if ($formType === 'sponsor') {
+    $endpoint = '/api/public/sponsor';
+    $payload = json_encode([
+        'companyName' => clean($data['company'] ?? 'Unknown Company'),
+        'contactName' => clean($data['fullName'] ?? $name),
+        'phone' => clean($data['mobile'] ?? $mobile),
+        'email' => clean($data['email'] ?? $email),
+        'tier' => clean($data['designation'] ?? 'general'),
+        'interestedIn' => clean($data['message'] ?? $message)
+    ]);
+} else {
+    $endpoint = '/api/public/enquiry';
+    $payload = json_encode([
+        'name' => $name,
+        'phone' => $mobile,
+        'email' => $email,
+        'message' => $message !== '' ? $message : 'No message provided'
+    ]);
+}
+
+$ch = curl_init($admin_api_url . $endpoint);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'x-api-key: ' . $admin_api_key
+]);
+curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+curl_exec($ch);
+curl_close($ch);
+// --- End Notify Admin Panel ---
 
 try {
     // Send visitor information to the admin Gmail account.
@@ -113,73 +176,24 @@ try {
     $adminMail->addReplyTo($email, $name);
     $adminMail->Subject = "New contact enquiry from {$name}";
     $adminMail->Body = '<h2>New Contact Form Submission</h2>' . $detailsHtml;
-    $adminMail->AltBody = "New contact enquiry\nName: {$name}\nMobile: {$mobile}\nEmail: {$email}\nCity: {$city}\nPreferred Model: {$preferredModel}\nEnquiry Type: {$enquiryType}\nMessage: " . ($message !== '' ? $message : 'Not provided');
     $adminMail->send();
 
-    // Send a confirmation email to the visitor.
+    // Send a polite acknowledgment to the visitor.
     $visitorMail = configureMailer($gmailAddress, $gmailAppPassword);
     $visitorMail->addAddress($email, $name);
-    $visitorMail->Subject = 'Your query has been submitted - Baby Olympic Games';
-    $visitorMail->Body = "<p>Dear {$safeName},</p><p>Your query has been submitted successfully. Thank you for contacting Baby Olympic Games. We have received your details and will get back to you soon.</p><h3>Your submitted details</h3>" . $detailsHtml;
-    $visitorMail->AltBody = "Dear {$name},\n\nYour query has been submitted successfully. Thank you for contacting Baby Olympic Games. We have received your details and will get back to you soon.";
+    $visitorMail->Subject = "Thank you for contacting Baby Olympic Games";
+    $visitorMail->Body = '<h2>Thank you, ' . $safeName . '!</h2>
+<p>We have received your message and will get back to you shortly.</p>
+<p><strong>Your Message:</strong><br>' . $safeMessage . '</p>
+<br>
+<p>Best regards,<br>Baby Olympic Games Team</p>';
     $visitorMail->send();
 
-    // --- Notify Admin Panel ---
-    $admin_api_url = getenv('ADMIN_API_URL') ?: 'https://admin.babyolympic.com';
-    $admin_api_key = getenv('ADMIN_API_KEY') ?: 'bog-2026-public-api-key';
-    
-    if ($formType === 'registration') {
-        $endpoint = '/api/public/register';
-        $payload = json_encode([
-            'childName' => clean($data['childName'] ?? ''),
-            'parentName' => clean($data['parentName'] ?? $name),
-            'phone' => clean($data['phone'] ?? $data['mobile'] ?? $mobile),
-            'email' => clean($data['email'] ?? $email),
-            'dob' => clean($data['dob'] ?? ''),
-            'age' => isset($data['age']) ? (int)$data['age'] : null,
-            'category' => clean($data['category'] ?? ''),
-            'games' => isset($data['games']) && is_array($data['games']) ? $data['games'] : [],
-            'city' => clean($data['city'] ?? $city),
-            'state' => clean($data['state'] ?? ''),
-            'school' => clean($data['school'] ?? ''),
-            'medical' => clean($data['medical'] ?? ''),
-            'regId' => clean($data['regId'] ?? '')
-        ]);
-    } else if ($formType === 'sponsor') {
-        $endpoint = '/api/public/sponsor';
-        $payload = json_encode([
-            'companyName' => clean($data['company'] ?? 'Unknown Company'),
-            'contactName' => clean($data['fullName'] ?? $name),
-            'phone' => clean($data['mobile'] ?? $mobile),
-            'email' => clean($data['email'] ?? $email),
-            'tier' => clean($data['designation'] ?? 'general'),
-            'interestedIn' => clean($data['message'] ?? $message)
-        ]);
-    } else {
-        $endpoint = '/api/public/enquiry';
-        $payload = json_encode([
-            'name' => $name,
-            'phone' => $mobile,
-            'email' => $email,
-            'message' => $message !== '' ? $message : 'No message provided'
-        ]);
-    }
-    
-    $ch = curl_init($admin_api_url . $endpoint);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        'x-api-key: ' . $admin_api_key
-    ]);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-    curl_exec($ch);
-    curl_close($ch);
-    // --- End Notify Admin Panel ---
+    respond(200, ['success' => true]);
 
-    respond(200, ['success' => true, 'message' => 'Your enquiry was sent successfully. A confirmation email has been sent to you.']);
 } catch (Exception $exception) {
+    $errorMsg = date('Y-m-d H:i:s') . " - Mailer Error: " . $exception->getMessage() . "\n";
+    file_put_contents(__DIR__ . '/mail_errors.log', $errorMsg, FILE_APPEND);
     error_log('Contact email error: ' . $exception->getMessage());
-    respond(500, ['success' => false, 'error' => 'Email could not be sent. Please try again later.']);
+    respond(500, ['success' => false, 'error' => 'Email could not be sent. Error: ' . $exception->getMessage()]);
 }
