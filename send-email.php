@@ -170,23 +170,71 @@ curl_close($ch);
 // --- End Notify Admin Panel ---
 
 try {
-    // Send visitor information to the admin Gmail account.
     $adminMail = configureMailer($gmailAddress, $gmailAppPassword);
     $adminMail->addAddress($adminEmail);
     $adminMail->addReplyTo($email, $name);
-    $adminMail->Subject = "New contact enquiry from {$name}";
-    $adminMail->Body = '<h2>New Contact Form Submission</h2>' . $detailsHtml;
+    
+    // Attachments for Admin
+    if (isset($data['photo']) && is_array($data['photo']) && !empty($data['photo']['data'])) {
+        $b64 = preg_replace('#^data:image/[^;]+;base64,#', '', $data['photo']['data']);
+        $decoded = base64_decode($b64);
+        if ($decoded) {
+            $adminMail->addStringAttachment($decoded, $data['photo']['name'] ?? 'photo.jpg');
+        }
+    }
+    if (isset($data['cert']) && is_array($data['cert']) && !empty($data['cert']['data'])) {
+        $b64 = preg_replace('#^data:(image|application)/[^;]+;base64,#', '', $data['cert']['data']);
+        $decoded = base64_decode($b64);
+        if ($decoded) {
+            $adminMail->addStringAttachment($decoded, $data['cert']['name'] ?? 'certificate.pdf');
+        }
+    }
+
+    if ($formType === 'registration') {
+        $regIdStr = htmlspecialchars($data['regId'] ?? 'Pending', ENT_QUOTES, 'UTF-8');
+        $adminMail->Subject = "New Registration: {$name} ({$regIdStr})";
+        $adminMail->Body = '<h2>New Registration Received</h2>' . $detailsHtml;
+    } else if ($formType === 'sponsor') {
+        $adminMail->Subject = "New Sponsorship Inquiry from {$name}";
+        $adminMail->Body = '<h2>New Sponsor Inquiry</h2>' . $detailsHtml;
+    } else {
+        $adminMail->Subject = "New contact enquiry from {$name}";
+        $adminMail->Body = '<h2>New Contact Form Submission</h2>' . $detailsHtml;
+    }
+    
     $adminMail->send();
 
     // Send a polite acknowledgment to the visitor.
     $visitorMail = configureMailer($gmailAddress, $gmailAppPassword);
     $visitorMail->addAddress($email, $name);
-    $visitorMail->Subject = "Thank you for contacting Baby Olympic Games";
-    $visitorMail->Body = '<h2>Thank you, ' . $safeName . '!</h2>
+    
+    if ($formType === 'registration') {
+        $regIdStr = htmlspecialchars($data['regId'] ?? 'Pending', ENT_QUOTES, 'UTF-8');
+        $childNameStr = htmlspecialchars($data['childName'] ?? '', ENT_QUOTES, 'UTF-8');
+        $visitorMail->Subject = "Baby Olympic Registration Confirmation - {$regIdStr}";
+        $visitorMail->Body = '<h2>Thank you for registering, ' . $safeName . '!</h2>
+<p>We have successfully received your child\'s registration for the Baby Olympic Games 2026.</p>
+<p><strong>Registration ID:</strong> ' . $regIdStr . '</p>
+<p><strong>Child Name:</strong> ' . $childNameStr . '</p>
+<p>Our team will verify the details and contact you shortly.</p>
+<br>
+<p>Best regards,<br>Baby Olympic Games Team</p>';
+    } else if ($formType === 'sponsor') {
+        $visitorMail->Subject = "Thank you for your interest in Baby Olympic Games";
+        $visitorMail->Body = '<h2>Thank you, ' . $safeName . '!</h2>
+<p>We have successfully received your sponsorship inquiry.</p>
+<p>Our partnership team will review your details and contact you shortly to discuss collaboration opportunities.</p>
+<br>
+<p>Best regards,<br>Baby Olympic Games Team</p>';
+    } else {
+        $visitorMail->Subject = "Thank you for contacting Baby Olympic Games";
+        $visitorMail->Body = '<h2>Thank you, ' . $safeName . '!</h2>
 <p>We have received your message and will get back to you shortly.</p>
 <p><strong>Your Message:</strong><br>' . $safeMessage . '</p>
 <br>
 <p>Best regards,<br>Baby Olympic Games Team</p>';
+    }
+    
     $visitorMail->send();
 
     respond(200, ['success' => true]);
