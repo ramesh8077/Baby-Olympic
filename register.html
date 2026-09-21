@@ -1722,6 +1722,7 @@
                 </div>
                 <sc-if value="{{e.gender}}"><span class="err show">{{e.gender}}</span></sc-if>
               </div>
+              <sc-if value="{{gameOpts.length}}">
               <div class="fld">
                 <label class="lab">Sport / Games <span class="req">*</span></label
                 ><span class="help">Pick one or more games from your child's category</span>
@@ -1743,6 +1744,7 @@
 
                 <sc-if value="{{e.games}}"><span class="err show">{{e.games}}</span></sc-if>
               </div>
+              </sc-if>
               <div class="frow">
                 <div class="fld">
                   <label class="lab">School Name</label
