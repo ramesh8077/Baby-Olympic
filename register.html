@@ -1989,14 +1989,46 @@
           return a;
         }
         catFor(a) {
+          // Age-wise sports categories — Baby Games 2026
+          const group1 = [
+            'Athletics – 20m, 40m, Standing Jump, Ball Throw, Plastic Javelin',
+            'Football – 2-a-Side', 'Badminton – Singles', 'Table Tennis – Singles',
+            'Cycling', 'Karate', 'Yoga', 'Archery – Plastic Bow',
+            'Gymnastics', 'Judo', 'Taekwondo', 'Swimming',
+            'Handball', 'Throwball', 'Climbing', 'Tug of War – 3-a-Side',
+            'Weightlifting', 'Mini Golf', 'Basketball',
+            'Zumba & Aerobics', 'Volleyball – 2-a-Side', 'Cricket – 3-a-Side'
+          ];
+          const group2 = [
+            'Athletics – 50m, 30m, 100m, Broad Jump, Ball Throw, Javelin, Medicine Ball, Low Hurdle, Relay',
+            'Football – 4-a-Side', 'Badminton – Singles', 'Table Tennis – Singles',
+            'Cycling', 'Karate', 'Yoga', 'Archery',
+            'Gymnastics', 'Judo', 'Taekwondo', 'Swimming',
+            'Kho-Kho – 6-a-Side', 'Handball', 'Throwball', 'Climbing',
+            'Tug of War – 4-a-Side', 'Weightlifting', 'Powerlifting',
+            'Mini Golf', 'Basketball', 'Zumba & Aerobics',
+            'Volleyball', 'Cricket – 5-a-Side'
+          ];
+          const group3 = [
+            'Athletics – 50m, 80m, 100m, Long Jump, High Jump, Hurdle, Javelin, Relay 4×25m',
+            'Football – 5-a-Side', 'Badminton – Singles & Doubles', 'Table Tennis – Singles & Doubles',
+            'Cycling', 'Karate', 'Yoga', 'Archery',
+            'Gymnastics', 'Judo', 'Taekwondo', 'Swimming',
+            'Kho-Kho – 8-Player', 'Handball', 'Throwball – 4-Player',
+            'Climbing', 'Tug of War – 4-Player', 'Weightlifting', 'Powerlifting',
+            'Mini Golf', 'Basketball – 4-Player', 'Zumba & Aerobics',
+            'Volleyball – 3-Player', 'Chess', 'Cricket – 6-a-Side'
+          ];
           const cats = {
-            2: { name: 'Little Champion (2–3)', emoji: '🥉', games: ['Toddler dash', 'Balance walk', 'Ring toss', 'Hop-along fun'] },
-            3: { name: 'Young Explorer (3–4)', emoji: '🧭', games: ['Running race', 'Mini hurdles', 'Tunnel crawl', 'Relay starter'] },
-            4: { name: 'Future Champion (4–5)', emoji: '🎯', games: ['Sprint race', 'Agility track', 'Tricycle race', 'Dribble & score'] },
-            5: { name: 'Rising Star (5–6)', emoji: '🏆', games: ['Relay race', 'Target throw', 'Try-a-sport', 'Balance beam'] },
-            6: { name: 'Champion Squad (6–8)', emoji: '⚽', games: ['Football', 'Cricket', 'Relay race', 'Try-a-sport'] }
+            2: { name: 'Little Stars (3–4½ Years)', emoji: '⭐', games: group1 },
+            3: { name: 'Little Stars (3–4½ Years)', emoji: '⭐', games: group1 },
+            4: { name: 'Little Stars (3–4½ Years)', emoji: '⭐', games: group1 },
+            5: { name: 'Rising Champions (4½–6½ Years)', emoji: '🏆', games: group2 },
+            6: { name: 'Rising Champions (4½–6½ Years)', emoji: '🏆', games: group2 },
+            7: { name: 'Champion Squad (6½–8½ Years)', emoji: '🥇', games: group3 },
+            8: { name: 'Champion Squad (6½–8½ Years)', emoji: '🥇', games: group3 }
           };
-          return cats[Math.min(6, Math.max(2, a))] || null;
+          return cats[Math.min(8, Math.max(2, a))] || null;
         }
         validate(step) {
           const f = this.state.f, e = { parentName: '', mobile: '', email: '', city: '', childName: '', dob: '', gender: '', games: '', emName: '', emPhone: '', consent: '' };
@@ -2115,7 +2147,9 @@
                       medical: f.medical || '',
                       emName: f.emName,
                       emPhone: f.emPhone,
-                      regId: 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000))
+                      regId: 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000)),
+                      photo: f.photo || null,
+                      cert: f.cert || null
                     })
                   });
                   if (regRes.ok) {
