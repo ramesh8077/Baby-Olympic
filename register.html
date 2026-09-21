@@ -1693,6 +1693,18 @@
                     <div class="ageSub">{{ageSub}}</div>
                   </div>
                 </div>
+                
+                <sc-if value="{{showManualCategory}}">
+                <div style="margin-top:12px; font-size:14px; color:#555;">
+                  If you want to change the Age &amp; Category, update it from here:
+                  <select name="manualCategory" sc-camel-on-change="{{onField}}" value="{{f.manualCategory}}" style="width:100%; padding:10px; border:1px solid #dcd3e6; border-radius:8px; margin-top:6px; outline:none; font-family:inherit; background:#fff; font-size:14px; color:#333;">
+                    <option value="">Keep auto-mapped category</option>
+                    <option value="2">Little Stars (3–4½ Years)</option>
+                    <option value="5">Rising Champions (4½–6½ Years)</option>
+                    <option value="7">Champion Squad (6½–8½ Years)</option>
+                  </select>
+                </div>
+                </sc-if>
               </div>
               <div class="fld">
                 <label class="lab">Gender <span class="req">*</span></label>
@@ -1977,7 +1989,7 @@
           try { draft = JSON.parse(localStorage.getItem('bog-reg-draft') || '{}'); } catch (err) { draft = {}; }
           this.state = {
             menuOpen: false, step: 1, success: false, regId: '', confetti: [],
-            f: Object.assign({ parentName: '', mobile: '', email: '', city: 'Kanpur', state: 'Uttar Pradesh', childName: '', dob: '', gender: '', games: [], school: '', medical: '', emName: '', emPhone: '', photoName: '', certName: '', consentTerms: false, consentPhoto: false }, draft, { consentTerms: false, consentPhoto: false }),
+            f: Object.assign({ parentName: '', mobile: '', email: '', city: 'Kanpur', state: 'Uttar Pradesh', childName: '', dob: '', gender: '', games: [], school: '', medical: '', emName: '', emPhone: '', photoName: '', certName: '', consentTerms: false, consentPhoto: false, manualCategory: '' }, draft, { consentTerms: false, consentPhoto: false }),
             e: { parentName: '', mobile: '', email: '', city: '', childName: '', dob: '', gender: '', games: '', emName: '', emPhone: '', consent: '' }
           };
         }
@@ -2067,7 +2079,9 @@
         renderVals() {
           const st = this.state, f = st.f;
           const age = this.ageAtEvent();
-          const cat = age !== null && age >= 2 && age <= 8 ? this.catFor(age) : null;
+          let mappedAge = age;
+          if (f.manualCategory) mappedAge = Number(f.manualCategory);
+          const cat = mappedAge !== null && mappedAge >= 2 && mappedAge <= 8 ? this.catFor(mappedAge) : null;
           const labels = ['Parent', 'Child', 'Emergency', 'Consent'];
           return {
             menuOpen: st.menuOpen, toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
@@ -2108,7 +2122,8 @@
               } else {
                 this.setState(s => {
                   const nf = { ...s.f, [t.name]: v };
-                  if (t.name === 'dob') nf.games = [];
+                  if (t.name === 'dob') { nf.games = []; nf.manualCategory = ''; }
+                  if (t.name === 'manualCategory') nf.games = [];
                   return { f: nf };
                 }, () => this.persist());
               }
@@ -2275,7 +2290,8 @@
             parentFirst: (f.parentName.trim().split(' ')[0] || 'champion'),
             catEmoji: cat ? cat.emoji : '⭐',
             catTxt: cat ? cat.name : (age !== null ? 'Outside the 2–8 age range' : 'Auto-filled from date of birth'),
-            ageSub: cat ? 'Age on event day: ' + age + ' — category auto-mapped' : 'Pick the date of birth to see the category',
+            ageSub: cat ? 'Age on event day: ' + age + (f.manualCategory ? ' — manually selected' : ' — category auto-mapped') : 'Pick the date of birth to see the category',
+            showManualCategory: (age !== null && age >= 2 && age <= 8) || f.manualCategory,
             gameOpts: (cat ? cat.games : []).map(name => ({ name, on: f.games.includes(name) ? 'on' : '', checked: f.games.includes(name) })),
             gBoy: f.gender === 'Boy' ? 'on' : '', gGirl: f.gender === 'Girl' ? 'on' : '', gNA: f.gender === 'Prefer not to say' ? 'on' : '',
             photoLabel: f.photoName || 'Tap to upload a photo', certLabel: f.certName || 'Tap to upload the certificate',
