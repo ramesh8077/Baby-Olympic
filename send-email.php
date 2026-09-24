@@ -175,12 +175,14 @@ curl_close($ch);
 // --- End Notify Admin Panel ---
 
 try {
+    $disclaimerHtml = '<hr style="margin-top: 20px; border: 0; border-top: 1px solid #ccc;"><p style="font-size: 11px; color: #666; text-align: justify;"><strong>Disclaimer:</strong><br>This email and any attachments are confidential and intended solely for the named recipient. If you have received this email in error, please notify the sender immediately and delete it from your system. Any unauthorised review, use, disclosure or distribution is prohibited. The views expressed in this email are those of the sender and do not necessarily represent those of the Kanpur Olympic Association. While reasonable care has been taken, the sender does not accept liability for any damage caused by viruses or errors in transmission.</p>';
+
     // Send visitor information to the admin Gmail account.
     $adminMail = configureMailer($gmailAddress, $gmailAppPassword);
     $adminMail->addAddress($adminEmail);
     $adminMail->addReplyTo($email, $name);
     $adminMail->Subject = "New contact enquiry from {$name}";
-    $adminMail->Body = '<h2>New Contact Form Submission</h2>' . $detailsHtml;
+    $adminMail->Body = '<h2>New Contact Form Submission</h2>' . $detailsHtml . $disclaimerHtml;
     $adminMail->send();
 
     // Send a polite acknowledgment to the visitor.
@@ -191,7 +193,7 @@ try {
 <p>We have received your message and will get back to you shortly.</p>
 <p><strong>Your Message:</strong><br>' . $safeMessage . '</p>
 <br>
-<p>Best regards,<br>Baby Olympic Games Team</p>';
+<p>Best regards,<br>Baby Olympic Games Team</p>' . $disclaimerHtml;
     $visitorMail->send();
 
     respond(200, ['success' => true]);
