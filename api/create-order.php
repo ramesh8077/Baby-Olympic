@@ -15,9 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $input = json_decode(file_get_contents('php://input'), true);
-$amount = 25000; // Hardcoded to 25000 paise (₹250) to prevent frontend tampering
+
+$amount = isset($input['amount']) ? (int)$input['amount'] : 25000;
+if ($amount < 25000) {
+    $amount = 25000;
+}
+
 $currency = isset($input['currency']) ? $input['currency'] : 'INR';
 $receipt = isset($input['receipt']) ? $input['receipt'] : 'receipt_' . time();
+$registration_id = isset($input['registration_id']) ? $input['registration_id'] : '';
 
 $keyId = $_ENV['RAZORPAY_KEY_ID'] ?? null;
 $keySecret = $_ENV['RAZORPAY_KEY_SECRET'] ?? null;
@@ -35,6 +41,9 @@ try {
         'receipt'         => $receipt,
         'amount'          => $amount, // in paise
         'currency'        => $currency,
+        'notes'           => [
+            'registration_id' => $registration_id
+        ]
     ];
 
     $razorpayOrder = $api->order->create($orderData);

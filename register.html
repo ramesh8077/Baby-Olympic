@@ -1533,7 +1533,7 @@
               alt="Baby Games 2026"
               style="height: 180px; width: auto; display: block"
           /></a>
-          <nav class="hd-links"><a class="hd-link" href="/">Home</a><a class="hd-link" href="./about.html">About Event</a><a class="hd-link on" href="./register.html">Register</a><a class="hd-link" href="./contact.html">Contact</a><a class="hd-cta" href="./register.html">Register Now</a></nav>
+          <nav class="hd-links"><a class="hd-link" href="/">Home</a><a class="hd-link" href="/about">About Event</a><a class="hd-link on" href="/register">Register</a><a class="hd-link" href="/contact">Contact</a><a class="hd-cta" href="/register">Register Now</a></nav>
           <button class="hd-burger" sc-camel-on-click="{{toggleMenu}}" aria-label="Toggle menu">
             <svg width="20" height="16" sc-camel-view-box="0 0 20 16" fill="none">
               <path
@@ -1546,7 +1546,7 @@
           </button>
         </div>
         <sc-if value="{{menuOpen}}"
-          ><div class="hd-mmenu" id="mobileMenu"><a class="hd-mlink" href="/">Home</a><a class="hd-mlink" href="./about.html">About Event</a><a class="hd-mlink on" href="./register.html">Register</a><a class="hd-mlink" href="./contact.html">Contact</a><a class="hd-cta hd-mcta" href="./register.html">Register Now</a></div></sc-if
+          ><div class="hd-mmenu" id="mobileMenu"><a class="hd-mlink" href="/">Home</a><a class="hd-mlink" href="/about">About Event</a><a class="hd-mlink on" href="/register">Register</a><a class="hd-mlink" href="/contact">Contact</a><a class="hd-cta hd-mcta" href="/register">Register Now</a></div></sc-if
         >
       </div>
       <header class="hero">
@@ -1597,6 +1597,17 @@
                   ><span class="err show">{{e.parentName}}</span></sc-if
                 >
               </div>
+              <div class="fld">
+                <label class="lab">Relation with Child <span class="req">*</span></label>
+                <select class="inp" name="relation" sc-camel-on-change="{{onField}}" value="{{f.relation}}">
+                  <option value="">-- Select Relation --</option>
+                  <option value="Father">Father</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Guardian">Guardian</option>
+                  <option value="Other">Other</option>
+                </select>
+                <sc-if value="{{e.relation}}"><span class="err show">{{e.relation}}</span></sc-if>
+              </div>
               <div class="frow">
                 <div class="fld">
                   <label class="lab">Mobile Number <span class="req">*</span></label
@@ -1634,14 +1645,14 @@
                   /><sc-if value="{{e.city}}"><span class="err show">{{e.city}}</span></sc-if>
                 </div>
                 <div class="fld">
-                  <label class="lab">State</label
+                  <label class="lab">State <span class="req">*</span></label
                   ><input
                     class="inp"
                     name="state"
                     value="{{f.state}}"
                     sc-camel-on-change="{{onField}}"
                     placeholder="State"
-                  />
+                  /><sc-if value="{{e.state}}"><span class="err show">{{e.state}}</span></sc-if>
                 </div>
               </div>
               <div class="btnrow">
@@ -1759,24 +1770,39 @@
               </sc-if>
               <div class="frow">
                 <div class="fld">
-                  <label class="lab">School Name</label
+                  <label class="lab">School Name <span class="req">*</span></label
                   ><input
                     class="inp"
                     name="school"
                     value="{{f.school}}"
                     sc-camel-on-change="{{onField}}"
-                    placeholder="School name (if any)"
-                  />
+                    placeholder="School name"
+                  /><sc-if value="{{e.school}}"><span class="err show">{{e.school}}</span></sc-if>
                 </div>
                 <div class="fld">
-                  <label class="lab">Medical Condition</label
-                  ><input
-                    class="inp"
-                    name="medical"
-                    value="{{f.medical}}"
-                    sc-camel-on-change="{{onField}}"
-                    placeholder="Any allergy / condition"
-                  />
+                  <label class="lab">Medical Condition <span class="req">*</span></label>
+                  <select class="inp" name="medical" sc-camel-on-change="{{onField}}" value="{{f.medical}}">
+                    <option value="">-- Select Medical Condition --</option>
+                    <option value="None">None</option>
+                    <option value="Asthma">Asthma</option>
+                    <option value="Allergy">Allergy</option>
+                    <option value="Heart Condition">Heart Condition</option>
+                    <option value="Diabetes">Diabetes</option>
+                    <option value="Epilepsy/Seizures">Epilepsy/Seizures</option>
+                    <option value="Physical Disability">Physical Disability</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <sc-if value="{{e.medical}}"><span class="err show">{{e.medical}}</span></sc-if>
+                  <sc-if value="{{f.medical === 'Other'}}">
+                    <input
+                      class="inp"
+                      name="medicalOther"
+                      value="{{f.medicalOther}}"
+                      sc-camel-on-change="{{onField}}"
+                      placeholder="Please specify the medical condition"
+                      style="margin-top:8px;"
+                    /><sc-if value="{{e.medicalOther}}"><span class="err show">{{e.medicalOther}}</span></sc-if>
+                  </sc-if>
                 </div>
               </div>
               <div class="btnrow">
@@ -1821,10 +1847,7 @@
               </div>
               <div class="fld">
                 <label class="lab"
-                  >Child Photograph
-                  <span style="font-weight: 500; color: #8a76a3; font-size: 15px"
-                    >(optional)</span
-                  ></label
+                  >Child Photograph <span class="req">*</span></label
                 ><label class="up"
                   ><span style="font-size: 22px">📷</span>
                   <div>
@@ -1837,13 +1860,11 @@
                     accept="image/*"
                     sc-camel-on-change="{{onField}}"
                 /></label>
+                <sc-if value="{{e.photoName}}"><span class="err show">{{e.photoName}}</span></sc-if>
               </div>
               <div class="fld">
                 <label class="lab"
-                  >Birth Certificate
-                  <span style="font-weight: 500; color: #8a76a3; font-size: 15px"
-                    >(optional)</span
-                  ></label
+                  >Birth Certificate <span class="req">*</span></label
                 ><label class="up"
                   ><span style="font-size: 22px">📄</span>
                   <div>
@@ -1856,6 +1877,7 @@
                     accept="image/*,.pdf"
                     sc-camel-on-change="{{onField}}"
                 /></label>
+                <sc-if value="{{e.certName}}"><span class="err show">{{e.certName}}</span></sc-if>
               </div>
               <div class="btnrow">
                 <button class="btn btnGhost" sc-camel-on-click="{{back}}">← Back</button
@@ -1895,7 +1917,7 @@
               <div class="btnrow">
                 <button class="btn btnGhost" sc-camel-on-click="{{back}}">← Back</button
                 ><button class="btn btnGold {{submitDis}}" sc-camel-on-click="{{submit}}">
-                  Pay ₹250 & Submit Registration
+                  Pay ₹{{totalAmount}} & Submit Registration
                 </button>
               </div>
             </sc-if>
@@ -1954,8 +1976,8 @@
               <a class="ft-link" href="/">Home</a
               ><a class="ft-link" href="/about">About Event</a
               ><a class="ft-link" href="/sponsor">Sponsor</a
-              ><a class="ft-link" href="./register.html">Register</a
-              ><a class="ft-link" href="./contact.html">Contact</a><a class="ft-link" href="/privacy-policy">Privacy Policy</a><a class="ft-link" href="/terms">Terms &amp; Conditions</a>
+              ><a class="ft-link" href="/register">Register</a
+              ><a class="ft-link" href="/contact">Contact</a><a class="ft-link" href="/privacy-policy">Privacy Policy</a><a class="ft-link" href="/terms">Terms &amp; Conditions</a>
             </div>
           </div>
           <div>
@@ -1971,7 +1993,7 @@
             <div class="ft-h">Follow the Fun</div>
             <div class="ft-links">
               <div class="ft-socials"><a class="ft-social-link" href="https://x.com/kanpurolympici" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a><a class="ft-social-link" href="https://www.facebook.com/profile.php?id=61591818121258" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg></a><a class="ft-social-link" href="https://www.instagram.com/kanpurolympici/" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a><a class="ft-social-link" href="https://www.youtube.com/@kanpurolympici" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.516 0-9.387.507A3.003 3.003 0 00.502 6.164C0 8.07 0 12 0 12s0 3.93.502 5.837a3.003 3.003 0 002.11 2.11c1.871.507 9.387.507 9.387.507s7.517 0 9.387-.507a3.003 3.003 0 002.11-2.11C24 15.93 24 12 24 12s0-3.93-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a></div>
-              <a class="ft-cta" href="./register.html">Register Now</a>
+              <a class="ft-cta" href="/register">Register Now</a>
             </div>
           </div>
         </div>
@@ -1989,8 +2011,8 @@
           try { draft = JSON.parse(localStorage.getItem('bog-reg-draft') || '{}'); } catch (err) { draft = {}; }
           this.state = {
             menuOpen: false, step: 1, success: false, regId: '', confetti: [],
-            f: Object.assign({ parentName: '', mobile: '', email: '', city: 'Kanpur', state: 'Uttar Pradesh', childName: '', dob: '', gender: '', games: [], school: '', medical: '', emName: '', emPhone: '', photoName: '', certName: '', consentTerms: false, consentPhoto: false, manualCategory: '' }, draft, { consentTerms: false, consentPhoto: false }),
-            e: { parentName: '', mobile: '', email: '', city: '', childName: '', dob: '', gender: '', games: '', emName: '', emPhone: '', consent: '' }
+            f: Object.assign({ parentName: '', mobile: '', email: '', city: '', state: '', relation: '', childName: '', dob: '', gender: '', games: [], school: '', medical: '', medicalOther: '', emName: '', emPhone: '', photoName: '', certName: '', consentTerms: false, consentPhoto: false, manualCategory: '' }, draft, { consentTerms: false, consentPhoto: false }),
+            e: { parentName: '', mobile: '', email: '', city: '', state: '', relation: '', childName: '', dob: '', gender: '', games: '', school: '', medical: '', medicalOther: '', emName: '', emPhone: '', photoName: '', certName: '', consent: '' }
           };
         }
         persist() {
@@ -2016,7 +2038,8 @@
             'Gymnastics', 'Judo', 'Taekwondo', 'Swimming',
             'Handball', 'Throwball', 'Climbing', 'Tug of War – 3-a-Side',
             'Weightlifting', 'Mini Golf', 'Basketball',
-            'Zumba & Aerobics', 'Volleyball – 2-a-Side', 'Cricket – 3-a-Side'
+            'Zumba & Aerobics', 'Volleyball – 2-a-Side', 'Cricket – 3-a-Side',
+            'Boxing'
           ];
           const group2 = [
             'Athletics – 50m, 30m, 100m, Broad Jump, Ball Throw, Javelin, Medicine Ball, Low Hurdle, Relay',
@@ -2050,14 +2073,16 @@
           return cats[Math.min(8, Math.max(2, a))] || null;
         }
         validate(step) {
-          const f = this.state.f, e = { parentName: '', mobile: '', email: '', city: '', childName: '', dob: '', gender: '', games: '', emName: '', emPhone: '', consent: '' };
+          const f = this.state.f, e = { parentName: '', mobile: '', email: '', city: '', state: '', relation: '', childName: '', dob: '', gender: '', games: '', school: '', medical: '', medicalOther: '', emName: '', emPhone: '', photoName: '', certName: '', consent: '' };
           let ok = true;
           const fail = (k, msg) => { e[k] = msg; ok = false; };
           if (step === 1) {
             if (!/^[A-Za-z\u0900-\u097F][A-Za-z\u0900-\u097F .']{2,}$/.test(f.parentName.trim())) fail('parentName', 'Please enter a name (min 3 letters).');
+            if (!f.relation) fail('relation', 'Please select your relation with the child.');
             if (!/^[6-9]\d{9}$/.test(f.mobile.trim())) fail('mobile', 'Enter a valid 10-digit Indian mobile number.');
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) fail('email', 'Enter a valid email address.');
             if (!f.city.trim()) fail('city', 'City is required.');
+            if (!f.state.trim()) fail('state', 'State is required.');
           }
           if (step === 2) {
             if (f.childName.trim().length < 2) fail('childName', "Please enter your child's name.");
@@ -2066,11 +2091,17 @@
             else if (a < 2 || a > 8) fail('dob', 'Your child must be 2–8 years old on 5 Oct 2026.');
             if (!f.gender) fail('gender', 'Please select one.');
             if (!f.games.length) fail('games', 'Pick at least one game.');
+            else if (f.games.length > 5) fail('games', 'You can select a maximum of 5 games.');
+            if (!f.school.trim()) fail('school', 'School name is required.');
+            if (!f.medical) fail('medical', 'Please select a medical condition.');
+            if (f.medical === 'Other' && !f.medicalOther.trim()) fail('medicalOther', 'Please specify the medical condition.');
           }
           if (step === 3) {
             if (f.emName.trim().length < 3) fail('emName', 'Emergency contact name is required.');
             if (!/^[6-9]\d{9}$/.test(f.emPhone.trim())) fail('emPhone', 'Enter a valid 10-digit mobile number.');
             else if (f.emPhone.trim() === f.mobile.trim()) fail('emPhone', 'Should be different from the parent mobile.');
+            if (!f.photoName) fail('photoName', 'Please upload a child photograph.');
+            if (!f.certName) fail('certName', 'Please upload a birth certificate.');
           }
           if (step === 4 && (!f.consentTerms || !f.consentPhoto)) fail('consent', 'Both consents are required to submit.');
           this.setState({ e });
@@ -2085,7 +2116,7 @@
           const labels = ['Parent', 'Child', 'Emergency', 'Consent'];
           return {
             menuOpen: st.menuOpen, toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
-            fee: '₹250 per child',
+            fee: '₹250 per game',
             notSuccess: !st.success, success: st.success, regId: st.regId, confetti: st.confetti,
             s1: st.step === 1, s2: st.step === 2, s3: st.step === 3, s4: st.step === 4,
             psteps: labels.map((label, i) => ({ label, mark: st.step > i + 1 ? '✓' : String(i + 1), cls: st.step === i + 1 ? 'on' : (st.step > i + 1 ? 'done' : ''), bar: i > 0 })),
@@ -2132,6 +2163,10 @@
               const g = ev.currentTarget.dataset.g;
               this.setState(s => {
                 const has = s.f.games.includes(g);
+                if (!has && s.f.games.length >= 5) {
+                  setTimeout(() => window.showToast('You can select a maximum of 5 games.', true), 10);
+                  return s;
+                }
                 return { f: { ...s.f, games: has ? s.f.games.filter(x => x !== g) : [...s.f.games, g] } };
               }, () => this.persist());
             },
@@ -2165,8 +2200,9 @@
                       games: f.games,
                       city: f.city,
                       state: f.state,
-                      school: f.school || '',
-                      medical: f.medical || '',
+                      relation: f.relation,
+                      school: f.school,
+                      medical: f.medical === 'Other' ? 'Other: ' + f.medicalOther : f.medical,
                       emName: f.emName,
                       emPhone: f.emPhone,
                       regId: 'BOG-2026-' + String(Math.floor(10000 + Math.random() * 90000)),
@@ -2182,14 +2218,16 @@
                   console.warn('Admin panel sync (register) failed, continuing with payment:', adminErr);
                 }
 
+                const totalPaise = this.state.f.games.length * 25000;
                 // Step 2: Create Razorpay Order
                 const orderRes = await fetch('api/create-order.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        amount: 25000, // 25000 paise = ₹250
+                        amount: totalPaise, // 25000 paise = ₹250 per game
                         currency: 'INR',
-                        receipt: 'rcpt_' + Date.now()
+                        receipt: 'rcpt_' + Date.now(),
+                        registration_id: registrationDbId
                     })
                 });
                 const orderData = await orderRes.json();
@@ -2215,7 +2253,7 @@
                                 razorpay_order_id: response.razorpay_order_id,
                                 razorpay_signature: response.razorpay_signature,
                                 registration_db_id: registrationDbId,
-                                amount: 25000
+                                amount: totalPaise
                             })
                         });
                         const verifyData = await verifyRes.json();
@@ -2230,7 +2268,7 @@
                               registrationId: registrationDbId,
                               razorpayPaymentId: response.razorpay_payment_id,
                               razorpayOrderId: response.razorpay_order_id,
-                              amount: 25000
+                              amount: totalPaise
                             })
                           }).catch(e => console.warn('Admin payment sync fallback error:', e));
                         }
@@ -2297,6 +2335,7 @@
             photoLabel: f.photoName || 'Tap to upload a photo', certLabel: f.certName || 'Tap to upload the certificate',
             ckT: f.consentTerms ? 'on' : '', ckP: f.consentPhoto ? 'on' : '',
             submitDis: (f.consentTerms && f.consentPhoto) ? '' : 'dis',
+            totalAmount: (f.games.length * 250),
             icsHref: 'data:text/calendar;charset=utf8,' + encodeURIComponent('BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//BOG//Kanpur2026//EN\nBEGIN:VEVENT\nUID:bog-kanpur-2026\nDTSTART:20261005T033000Z\nDTEND:20261009T123000Z\nSUMMARY:Baby Games Kanpur 2026\nLOCATION:Kanpur\nDESCRIPTION:India\'s youngest sporting movement, ages 2-8.\nEND:VEVENT\nEND:VCALENDAR'),
             shareHref: 'https://wa.me/?text=' + encodeURIComponent("We just registered for Baby Games Kanpur 2026! Ages 2-8, 5-9 Oct in Kanpur. Register your little champion too!")
           };
