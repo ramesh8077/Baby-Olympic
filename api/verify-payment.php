@@ -15,11 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true);
+$rawInput = file_get_contents('php://input');
+$input = json_decode($rawInput, true) ?: $_POST;
 
-$razorpay_payment_id = $input['razorpay_payment_id'] ?? null;
-$razorpay_order_id = $input['razorpay_order_id'] ?? null;
-$razorpay_signature = $input['razorpay_signature'] ?? null;
+$razorpay_payment_id = $input['razorpay_payment_id'] ?? $_POST['razorpay_payment_id'] ?? $_GET['razorpay_payment_id'] ?? null;
+$razorpay_order_id = $input['razorpay_order_id'] ?? $_POST['razorpay_order_id'] ?? $_GET['razorpay_order_id'] ?? null;
+$razorpay_signature = $input['razorpay_signature'] ?? $_POST['razorpay_signature'] ?? $_GET['razorpay_signature'] ?? null;
+$registration_db_id = $input['registration_db_id'] ?? $_POST['registration_db_id'] ?? $_GET['registration_db_id'] ?? null;
 
 if (!$razorpay_payment_id || !$razorpay_order_id || !$razorpay_signature) {
     http_response_code(400);
@@ -51,7 +53,6 @@ try {
     // --- Notify Admin Panel about successful payment ---
     $admin_api_url = $_ENV['ADMIN_API_URL'] ?? 'https://admin.babyolympic.com';
     $admin_api_key = $_ENV['ADMIN_API_KEY'] ?? 'bog-2026-public-api-key';
-    $registration_db_id = $input['registration_db_id'] ?? null;
     $payment_amount = 25000; // Hardcoded to 25000 paise (₹250)
 
     if ($registration_db_id) {
@@ -76,11 +77,20 @@ try {
     }
     // --- End Admin Panel Notification ---
     
+    if (!empty($_POST['razorpay_payment_id'])) {
+        header('Location: /register.html?payment=success&payment_id=' . urlencode($razorpay_payment_id) . '&reg_id=' . urlencode($registration_db_id ?? ''));
+        exit;
+    }
+
     echo json_encode([
         'status' => 'success', 
         'message' => 'Payment verified successfully'
     ]);
 } catch(SignatureVerificationError $e) {
+    if (!empty($_POST['razorpay_payment_id'])) {
+        header('Location: /register.html?payment=failed&error=' . urlencode($e->getMessage()));
+        exit;
+    }
     http_response_code(400);
     echo json_encode([
         'status' => 'error', 
@@ -88,6 +98,10 @@ try {
         'message' => $e->getMessage()
     ]);
 } catch(\Exception $e) {
+    if (!empty($_POST['razorpay_payment_id'])) {
+        header('Location: /register.html?payment=failed&error=' . urlencode($e->getMessage()));
+        exit;
+    }
     http_response_code(500);
     echo json_encode([
         'status' => 'error', 

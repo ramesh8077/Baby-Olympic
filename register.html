@@ -116,6 +116,84 @@
       }, 4000);
     };
 
+    (function() {
+      function checkInApp() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+        const isInApp = /FBAN|FBAV|Instagram|WhatsApp|Line|Snapchat|MicroMessenger|Twitter|GSA|MiuiBrowser|FB_IAB|FB4A|IAB|WebView/i.test(ua);
+        const isAndroid = /Android/i.test(ua);
+        const isIOS = /iPhone|iPad|iPod/i.test(ua);
+        return { isInApp, isAndroid, isIOS, ua };
+      }
+
+      window.bogBrowserInfo = checkInApp();
+
+      window.openInExternalBrowser = function() {
+        const currentUrl = window.location.href;
+        if (window.bogBrowserInfo.isAndroid) {
+          const cleanUrl = currentUrl.replace(/^https?:\/\//, '');
+          const intentUrl = 'intent://' + cleanUrl + '#Intent;scheme=https;package=com.android.chrome;end;';
+          window.location.href = intentUrl;
+        } else {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(currentUrl).then(function() {
+              window.showToast('Link copied! Please open Safari or Chrome and paste the link.', false);
+            }).catch(function() {
+              window.showToast('Please tap ⋯ top-right and select Open in Safari.', true);
+            });
+          } else {
+            window.showToast('Please tap ⋯ top-right and select Open in Safari.', true);
+          }
+        }
+      };
+
+      window.showInAppModal = function() {
+        let m = document.getElementById('__bog_inapp_modal');
+        if (!m) {
+          m = document.createElement('div');
+          m.id = '__bog_inapp_modal';
+          m.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);font-family:sans-serif;';
+          m.innerHTML = `
+            <div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.3);position:relative;">
+              <div style="font-size:44px;margin-bottom:12px;">📱</div>
+              <h3 style="margin:0 0 10px;color:#3B1264;font-size:20px;font-weight:700;">Open in Standard Browser</h3>
+              <p style="color:#555;font-size:14px;line-height:1.5;margin-bottom:18px;">
+                WhatsApp & Instagram browsers block UPI payment apps (GPay, PhonePe, Paytm). Please open in <b>Chrome</b> or <b>Safari</b>.
+              </p>
+              <div style="background:#F4EBFB;border-radius:12px;padding:12px 14px;text-align:left;font-size:13px;color:#3B1264;margin-bottom:20px;line-height:1.6;">
+                <b>Easy Steps:</b><br/>
+                1. Tap <b>⋮</b> or <b>⋯</b> (Top Right Corner)<br/>
+                2. Select <b>"Open in Chrome"</b> or <b>"Open in Safari"</b>
+              </div>
+              <button onclick="window.openInExternalBrowser()" style="width:100%;background:linear-gradient(135deg, #8B3FE8 0%, #FF3FA4 100%);color:#fff;border:none;padding:14px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(139,63,232,0.35);margin-bottom:10px;">
+                Open in Chrome / Safari 🚀
+              </button>
+              <button onclick="document.getElementById('__bog_inapp_modal').style.display='none'" style="background:none;border:none;color:#888;font-size:14px;cursor:pointer;padding:6px;">
+                Dismiss & Continue
+              </button>
+            </div>
+          `;
+          document.body.appendChild(m);
+        }
+        m.style.display = 'flex';
+      };
+
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.bogBrowserInfo.isInApp) {
+          let b = document.createElement('div');
+          b.id = '__bog_inapp_banner';
+          b.style.cssText = 'position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg, #FF9500 0%, #FF2D55 100%);color:#fff;padding:10px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;font-weight:600;text-align:center;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;';
+          b.innerHTML = `
+            <span>⚠️ UPI payments require Chrome/Safari browser.</span>
+            <button onclick="window.openInExternalBrowser()" style="background:#fff;color:#D70015;border:none;padding:5px 12px;border-radius:16px;font-weight:700;font-size:12px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+              Open in Chrome / Safari 🚀
+            </button>
+          `;
+          document.body.insertBefore(b, document.body.firstChild);
+          document.body.style.paddingTop = (document.body.style.paddingTop ? parseInt(document.body.style.paddingTop) + 45 : 45) + 'px';
+        }
+      });
+    })();
+
     document.addEventListener('DOMContentLoaded', async function () {
       const loading = document.getElementById('__bundler_loading');
       function setStatus(msg) { if (loading) loading.textContent = msg; }
@@ -2049,7 +2127,8 @@
             'Kho-Kho – 6-a-Side', 'Handball', 'Throwball', 'Climbing',
             'Tug of War – 4-a-Side', 'Weightlifting', 'Powerlifting',
             'Mini Golf', 'Basketball', 'Zumba & Aerobics',
-            'Volleyball', 'Cricket – 5-a-Side'
+            'Volleyball', 'Cricket – 5-a-Side',
+            'Boxing'
           ];
           const group3 = [
             'Athletics – 50m, 80m, 100m, Long Jump, High Jump, Hurdle, Javelin, Relay 4×25m',
@@ -2059,7 +2138,8 @@
             'Kho-Kho – 8-Player', 'Handball', 'Throwball – 4-Player',
             'Climbing', 'Tug of War – 4-Player', 'Weightlifting', 'Powerlifting',
             'Mini Golf', 'Basketball – 4-Player', 'Zumba & Aerobics',
-            'Volleyball – 3-Player', 'Chess', 'Cricket – 6-a-Side'
+            'Volleyball – 3-Player', 'Chess', 'Cricket – 6-a-Side',
+            'Boxing'
           ];
           const cats = {
             2: { name: 'Little Stars (3–4½ Years)', emoji: '⭐', games: group1 },
@@ -2309,13 +2389,30 @@
                   },
                   "theme": {
                     "color": "#8B3FE8"
-                  }
+                  },
+                  "callback_url": window.location.origin + "/api/verify-payment.php?registration_db_id=" + encodeURIComponent(registrationDbId || '')
                 };
+
+                if (window.bogBrowserInfo && window.bogBrowserInfo.isInApp) {
+                  if (window.bogBrowserInfo.isAndroid) {
+                    window.showToast('Opening Chrome for UPI payment...', false);
+                    setTimeout(function() { window.openInExternalBrowser(); }, 400);
+                    return;
+                  } else {
+                    window.showInAppModal();
+                    return;
+                  }
+                }
 
                 if (window.Razorpay) {
                   const rzp1 = new window.Razorpay(options);
                   rzp1.on('payment.failed', function (response) {
-                      window.showToast('Payment failed: ' + response.error.description, true);
+                      const errDesc = (response && response.error && response.error.description) ? response.error.description : '';
+                      if (errDesc.toLowerCase().includes('not supported') || errDesc.toLowerCase().includes('browser')) {
+                        window.showInAppModal();
+                      } else {
+                        window.showToast('Payment failed: ' + (errDesc || 'Payment was cancelled or failed.'), true);
+                      }
                   });
                   rzp1.open();
                 } else {
