@@ -81,6 +81,10 @@
   </noscript>
   <link rel="icon" type="image/png" href="BabyGamesLogo.png">
   <title>Baby Games</title>
+  <link rel="preconnect" href="https://checkout.razorpay.com" crossorigin>
+  <link rel="preconnect" href="https://api.razorpay.com" crossorigin>
+  <link rel="dns-prefetch" href="https://checkout.razorpay.com">
+  <link rel="dns-prefetch" href="https://api.razorpay.com">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 
@@ -177,7 +181,64 @@
         m.style.display = 'flex';
       };
 
+      window.acceptBogCookies = function() {
+        try {
+          localStorage.setItem('bog_cookie_consent', 'true');
+          document.cookie = "bog_cookie_consent=true; max-age=31536000; path=/; SameSite=Lax";
+        } catch(e) {}
+        let cb = document.getElementById('__bog_cookie_banner');
+        if (cb) cb.style.display = 'none';
+      };
+
       document.addEventListener('DOMContentLoaded', function() {
+        // 1. Cookie Consent Banner Initialization
+        try {
+          const hasConsent = localStorage.getItem('bog_cookie_consent') || document.cookie.includes('bog_cookie_consent=true');
+          if (!hasConsent) {
+            let cb = document.createElement('div');
+            cb.id = '__bog_cookie_banner';
+            cb.style.cssText = 'position:fixed;bottom:20px;left:20px;right:20px;max-width:440px;background:#3B1264;color:#fff;padding:16px 20px;border-radius:16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;line-height:1.4;z-index:999998;box-shadow:0 12px 30px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:space-between;gap:12px;';
+            cb.innerHTML = `
+              <div>
+                <span style="font-size:16px;margin-right:4px;">🍪</span>
+                <b>Secure Payment Consent</b><br/>
+                <span style="color:#DDD;font-size:12px;">We use cookies to enable secure UPI & Card payment gateways.</span>
+              </div>
+              <button onclick="window.acceptBogCookies()" style="background:#FFD400;color:#3B1264;border:none;padding:8px 14px;border-radius:20px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+                Accept & Continue
+              </button>
+            `;
+            document.body.appendChild(cb);
+          }
+        } catch(e) {}
+
+        // 2. Pre-warm Razorpay SDK Engine & Iframe Bridge
+        if (window.Razorpay) {
+          try {
+            window.__rzp_warmed = new window.Razorpay({
+              key: 'rzp_live_dummy',
+              amount: 100,
+              currency: 'INR',
+              name: 'Baby Games Warmup',
+              modal: { ondismiss: function(){} }
+            });
+          } catch(e) {}
+        }
+
+        // 3. Intercept native alerts from Razorpay checkout.js
+        const nativeAlert = window.alert;
+        window.alert = function(msg) {
+          if (msg && typeof msg === 'string' && (msg.toLowerCase().includes('not supported') || msg.toLowerCase().includes('browser'))) {
+            console.warn('Intercepted unsupported browser alert:', msg);
+            if (window.showInAppModal) {
+              window.showInAppModal();
+            }
+            return;
+          }
+          return nativeAlert.apply(window, arguments);
+        };
+
+        // 4. In-App Banner Handler
         if (window.bogBrowserInfo.isInApp) {
           let b = document.createElement('div');
           b.id = '__bog_inapp_banner';
@@ -2414,7 +2475,19 @@
                         window.showToast('Payment failed: ' + (errDesc || 'Payment was cancelled or failed.'), true);
                       }
                   });
-                  rzp1.open();
+                  try {
+                    rzp1.open();
+                  } catch (openErr) {
+                    console.warn('First open attempt failed, retrying after pre-warm...', openErr);
+                    setTimeout(function() {
+                      try {
+                        const rzpRetry = new window.Razorpay(options);
+                        rzpRetry.open();
+                      } catch(retryErr) {
+                        window.showInAppModal();
+                      }
+                    }, 300);
+                  }
                 } else {
                   window.showToast("Payment gateway is currently loading or unavailable. Please try again later.", true);
                 }
