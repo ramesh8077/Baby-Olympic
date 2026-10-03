@@ -23,7 +23,7 @@ if ($amount < 25000) {
 
 $currency = isset($input['currency']) ? $input['currency'] : 'INR';
 $receipt = isset($input['receipt']) ? $input['receipt'] : 'receipt_' . time();
-$registration_id = isset($input['registration_id']) ? $input['registration_id'] : '';
+$registration_id = isset($input['registration_id']) && $input['registration_id'] !== null ? (string)$input['registration_id'] : 'N/A';
 
 $keyId = $_ENV['RAZORPAY_KEY_ID'] ?? null;
 $keySecret = $_ENV['RAZORPAY_KEY_SECRET'] ?? null;
