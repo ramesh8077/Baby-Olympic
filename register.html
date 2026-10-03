@@ -2494,9 +2494,27 @@
                   "callback_url": window.location.origin + "/api/verify-payment.php?registration_db_id=" + encodeURIComponent(registrationDbId || '')
                 };
 
+                console.log('DEBUG: Order created successfully:', JSON.stringify(orderData));
+                console.log('DEBUG: window.Razorpay exists?', !!window.Razorpay);
+                console.log('DEBUG: options.order_id:', options.order_id);
+                console.log('DEBUG: options.key:', options.key);
+                console.log('DEBUG: options.amount:', options.amount);
+
                 if (window.Razorpay) {
-                  const rzp1 = new window.Razorpay(options);
+                  console.log('DEBUG: Creating Razorpay instance...');
+                  let rzp1;
+                  try {
+                    rzp1 = new window.Razorpay(options);
+                    console.log('DEBUG: Razorpay instance created successfully');
+                  } catch(createErr) {
+                    console.error('DEBUG: Razorpay instance creation FAILED:', createErr);
+                    window.showToast('Payment gateway error: ' + createErr.message, true);
+                    alert('RAZORPAY CREATE ERROR: ' + createErr.message);
+                    return;
+                  }
+                  
                   rzp1.on('payment.failed', function (response) {
+                      console.log('DEBUG: Payment failed callback:', response);
                       const errDesc = (response && response.error && response.error.description) ? response.error.description : '';
                       if ((errDesc.toLowerCase().includes('not supported') || errDesc.toLowerCase().includes('browser')) && window.bogBrowserInfo && window.bogBrowserInfo.isInApp) {
                         window.showInAppModal();
@@ -2504,27 +2522,41 @@
                         window.showToast('Payment failed: ' + (errDesc || 'Payment was cancelled or failed.'), true);
                       }
                   });
+
+                  console.log('DEBUG: About to call rzp1.open()...');
                   try {
                     rzp1.open();
+                    console.log('DEBUG: rzp1.open() called successfully');
                   } catch (openErr) {
-                    console.warn('First open attempt failed, retrying...', openErr);
+                    console.error('DEBUG: rzp1.open() FAILED:', openErr);
+                    alert('RAZORPAY OPEN ERROR: ' + openErr.message + '\n\nStack: ' + openErr.stack);
+                    
+                    // Retry after 500ms
                     setTimeout(function() {
                       try {
+                        console.log('DEBUG: Retrying with new instance...');
                         const rzpRetry = new window.Razorpay(options);
                         rzpRetry.open();
+                        console.log('DEBUG: Retry open() succeeded');
                       } catch(retryErr) {
+                        console.error('DEBUG: Retry ALSO failed:', retryErr);
+                        alert('RAZORPAY RETRY ERROR: ' + retryErr.message);
                         if (window.bogBrowserInfo && window.bogBrowserInfo.isInApp) {
                           window.showInAppModal();
                         } else {
                           window.showToast('Payment error: ' + retryErr.message, true);
                         }
                       }
-                    }, 300);
+                    }, 500);
                   }
                 } else {
-                  window.showToast("Payment gateway is currently loading or unavailable. Please try again later.", true);
+                  console.error('DEBUG: window.Razorpay is UNDEFINED!');
+                  alert('Razorpay script not loaded! window.Razorpay = ' + typeof window.Razorpay);
+                  window.showToast("Payment gateway is not loaded. Please refresh the page.", true);
                 }
               } catch (err) {
+                console.error('DEBUG: OUTER catch error:', err);
+                alert('PAYMENT FLOW ERROR: ' + err.message + '\n\nStack: ' + err.stack);
                 window.showToast(err.message, true);
               }
             },
