@@ -53,7 +53,14 @@ try {
     // --- Notify Admin Panel about successful payment ---
     $admin_api_url = $_ENV['ADMIN_API_URL'] ?? 'https://admin.babyolympic.com';
     $admin_api_key = $_ENV['ADMIN_API_KEY'] ?? 'bog-2026-public-api-key';
-    $payment_amount = 25000; // Hardcoded to 25000 paise (₹250)
+    
+    $payment_amount = 25000;
+    try {
+        $paymentObj = $api->payment->fetch($razorpay_payment_id);
+        if ($paymentObj && isset($paymentObj->amount)) {
+            $payment_amount = (int)$paymentObj->amount;
+        }
+    } catch (\Exception $fetchErr) {}
 
     if ($registration_db_id) {
         $payment_payload = json_encode([
