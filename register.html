@@ -212,25 +212,12 @@
           }
         } catch(e) {}
 
-        // 2. Pre-warm Razorpay SDK Engine & Iframe Bridge
-        if (window.Razorpay) {
-          try {
-            window.__rzp_warmed = new window.Razorpay({
-              key: 'rzp_live_dummy',
-              amount: 100,
-              currency: 'INR',
-              name: 'Baby Games Warmup',
-              modal: { ondismiss: function(){} }
-            });
-          } catch(e) {}
-        }
-
-        // 3. Intercept native alerts from Razorpay checkout.js
+        // 2. Intercept native alerts from Razorpay checkout.js
         const nativeAlert = window.alert;
         window.alert = function(msg) {
           if (msg && typeof msg === 'string' && (msg.toLowerCase().includes('not supported') || msg.toLowerCase().includes('browser'))) {
             console.warn('Intercepted unsupported browser alert:', msg);
-            if (window.showInAppModal) {
+            if (window.bogBrowserInfo && window.bogBrowserInfo.isInApp && window.showInAppModal) {
               window.showInAppModal();
             }
             return;
@@ -2469,7 +2456,7 @@
                   const rzp1 = new window.Razorpay(options);
                   rzp1.on('payment.failed', function (response) {
                       const errDesc = (response && response.error && response.error.description) ? response.error.description : '';
-                      if (errDesc.toLowerCase().includes('not supported') || errDesc.toLowerCase().includes('browser')) {
+                      if ((errDesc.toLowerCase().includes('not supported') || errDesc.toLowerCase().includes('browser')) && window.bogBrowserInfo && window.bogBrowserInfo.isInApp) {
                         window.showInAppModal();
                       } else {
                         window.showToast('Payment failed: ' + (errDesc || 'Payment was cancelled or failed.'), true);
@@ -2478,13 +2465,17 @@
                   try {
                     rzp1.open();
                   } catch (openErr) {
-                    console.warn('First open attempt failed, retrying after pre-warm...', openErr);
+                    console.warn('First open attempt failed, retrying...', openErr);
                     setTimeout(function() {
                       try {
                         const rzpRetry = new window.Razorpay(options);
                         rzpRetry.open();
                       } catch(retryErr) {
-                        window.showInAppModal();
+                        if (window.bogBrowserInfo && window.bogBrowserInfo.isInApp) {
+                          window.showInAppModal();
+                        } else {
+                          window.showToast('Payment error: ' + retryErr.message, true);
+                        }
                       }
                     }, 300);
                   }
