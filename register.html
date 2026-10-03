@@ -185,6 +185,7 @@
         try {
           localStorage.setItem('bog_cookie_consent', 'true');
           document.cookie = "bog_cookie_consent=true; max-age=31536000; path=/; SameSite=Lax";
+          document.cookie = "bog_cookie_consent=true; max-age=31536000; path=/; SameSite=None; Secure";
         } catch(e) {}
         let cb = document.getElementById('__bog_cookie_banner');
         if (cb) cb.style.display = 'none';
@@ -2326,6 +2327,32 @@
             back: () => { this.setState({ step: Math.max(1, st.step - 1) }); window.scrollTo({ top: 0, behavior: 'smooth' }); },
             submit: async () => {
               if (!this.validate(4)) return;
+
+              // Auto-accept cookies before payment to ensure Razorpay iframe works
+              try {
+                localStorage.setItem('bog_cookie_consent', 'true');
+                document.cookie = "bog_cookie_consent=true; max-age=31536000; path=/; SameSite=None; Secure";
+                document.cookie = "bog_cookie_consent=true; max-age=31536000; path=/; SameSite=Lax";
+                const cb = document.getElementById('__bog_cookie_banner');
+                if (cb) cb.style.display = 'none';
+              } catch(e) {}
+
+              // Ensure Razorpay script is loaded
+              if (!window.Razorpay) {
+                window.showToast('Payment gateway loading, please wait...', false);
+                await new Promise((resolve, reject) => {
+                  const script = document.createElement('script');
+                  script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                  script.onload = resolve;
+                  script.onerror = () => reject(new Error('Failed to load payment gateway'));
+                  document.head.appendChild(script);
+                  setTimeout(resolve, 8000);
+                });
+                if (!window.Razorpay) {
+                  window.showToast('Payment gateway could not load. Please refresh the page and try again.', true);
+                  return;
+                }
+              }
 
               trackEvent('registration_initiated');
               window.showToast('Initializing secure payment...', false);
